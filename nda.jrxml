@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2019-10-28T16:27:59 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Giamis_Letter" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15f7329b-36ad-4352-89f0-964dac09ba9f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="userId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[select 
+(u.first_name || ' ' || u.last_name) as member,
+ou.name as organisation_unit,
+aud.name || ' ' || al.name as auditee
+from engagement_members as em
+join users as u on u.id = em.user_id
+join engagements as e on e.id = em.engagement_id
+join financial_years as fy on fy.id = e.financial_year_id
+left join users as cr on cr.email = em.created_by
+left join organisation_units as ou on ou.id = cr.organisation_unit_id
+join organisation_units as aud on aud.id = e.organisation_unit_id
+join organisation_unit_levels as al on al.id = aud.organisation_unit_level_id
+where em.id = $P{userId}]]>
+	</queryString>
+	<field name="member" class="java.lang.String"/>
+	<field name="organisation_unit" class="java.lang.String"/>
+	<field name="auditee" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<image>
+				<reportElement x="30" y="3" width="65" height="66" uuid="35b327eb-c832-4065-8c75-4f7281db53d6"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="12" y="72" width="150" height="18" uuid="46fe943e-b9fc-409f-a391-42af804bebea"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[The United Republic of Tanzania]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="4" width="71" height="18" uuid="eb236d34-61cd-480a-a616-b4c43b1206c5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[W/P Ref No. E10-2]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="137" y="6" width="286" height="18" uuid="a4cd0916-35bd-41d4-8ce3-ed556c786bd0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DECLARATION OF INDEPENDENCE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="156" y="-66" width="250" height="16" uuid="8ad086c7-7af6-4b71-80b4-b05574949ddf"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{organisation_unit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="234" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="62" width="550" height="14" uuid="a9a7b30b-6e86-47fc-9ca9-49be694a1901"/>
+				<text><![CDATA[That, I have no a relative or a close friend employed in the area of audit.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="11" y="26" width="550" height="24" uuid="c6b33e1a-b558-4124-b0ce-f9461013c240"/>
+				<textElement>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["That, I have not recently worked or transferred into internal audit from "+$F{auditee}+" in the previous year."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="11" y="0" width="550" height="20" uuid="cd34d0a3-16ee-4676-a35a-97c335b282ac"/>
+				<textElement>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["I "+$F{member}+" hereby declare"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="89" width="550" height="32" uuid="5745b8df-c4dc-47fb-8c7d-60502ca7ce4d"/>
+				<text><![CDATA[That, I shall not assume, without evidence, that an area being audited has effectively mitigated risks based solely on prior positive audit or my personal experience.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="12" y="127" width="550" height="37" uuid="b8c9f8a8-5ef4-4068-a502-36eb58bf1481"/>
+				<text><![CDATA[That, I shall not modify the planned approach or the results based on the undue influence of another person such as my senior, without appropriate justification.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="12" y="165" width="550" height="34" uuid="be2a7850-c07d-4a51-89df-a3b3637328e5"/>
+				<text><![CDATA[That, I have no personal interest, direct or indirect, in any matter that raises or may raise a conflict with my duties as an auditor.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="12" y="202" width="550" height="32" uuid="a926f5be-5db6-441f-ba13-b4676048f142"/>
+				<text><![CDATA[That, as an auditor, I shall at all times adhere fully with the International Professional Practices Framework (IPPF) on Independence and Objectivity Standards.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

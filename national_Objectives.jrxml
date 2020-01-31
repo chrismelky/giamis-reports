@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5511ccfb-0400-43d5-8440-944d91e79040">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="GiamisDb"/>
+	<queryString language="SQL">
+		<![CDATA[select id,code,description from objectives as obj]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="objectives"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="objectives"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="objectives"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="150" y="60" width="262" height="20" uuid="5bf4c8bc-8700-4d75-b5be-d447e9d2b150"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[United Replic Of Tanzania]]></text>
+			</staticText>
+			<image>
+				<reportElement x="240" y="0" width="60" height="60" uuid="9695b915-232f-4e5e-9285-f6bf67c404f6"/>
+				<imageExpression><![CDATA["C:/Users/Hp/Desktop/System Image/download.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="146" y="0" width="262" height="20" uuid="dd3b61d1-0278-4cb2-901d-96808e4650df"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[List of National Objectives]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="216" y="0" width="300" height="30" backcolor="#48C3F0" uuid="857d36c4-e4e4-42ec-ad4c-8801c21cd4fc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f08a2cc2-1e53-4909-9c51-8d29c6cc5821"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[   Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="0" width="100" height="30" backcolor="#48C3F0" uuid="e462f9b4-8ab6-4c85-8826-a36575c172ff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72d62084-8e11-40d2-b642-ea81efcefebc"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[     No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="0" width="100" height="30" backcolor="#48C3F0" uuid="622ea340-cbe5-442d-8269-bdb8904a1e52">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="88637a6a-5b3c-4a29-b226-0994cf8ad070"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[      Code]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="216" y="0" width="300" height="30" uuid="cc4ebc15-6112-41ca-9fa0-c1eea2eae38f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f08a2cc2-1e53-4909-9c51-8d29c6cc5821"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[  $F{description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="0" width="100" height="30" uuid="956d62c1-1486-4f15-a9cc-1bd2c47f7ab6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72d62084-8e11-40d2-b642-ea81efcefebc"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[  $F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="115" y="0" width="100" height="30" uuid="1a7535d7-3b10-4547-a409-4076a5ff3855">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="88637a6a-5b3c-4a29-b226-0994cf8ad070"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[  $F{code}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<line>
+				<reportElement x="190" y="22" width="360" height="1" uuid="2db9249c-be36-4e47-ac75-c42fecbe7d0d"/>
+			</line>
+			<staticText>
+				<reportElement x="190" y="4" width="185" height="18" uuid="b4a44811-c211-4c94-88b0-5e4476e0d7c1"/>
+				<text><![CDATA[Report Generated From GiAMIS © 2019]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="375" y="2" width="95" height="21" uuid="999bdd47-dbd6-4e1f-b8a3-432e2779ca5c"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="465" y="2" width="89" height="21" uuid="665d7054-1f22-49c6-ba9e-611a59635669"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="2" width="10" height="20" uuid="53321cb0-3e0f-44b6-a171-04e2766074af"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="50" y="2" width="10" height="20" uuid="91a2ff20-2741-4c4e-ab84-c718eca2c044"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="2" width="29" height="20" uuid="177cca16-6ed7-43e2-8c0b-4e7438e26e8b"/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="2" width="10" height="20" uuid="0f48a439-8942-49c2-9327-94024f6f2c7b"/>
+				<text><![CDATA[of]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

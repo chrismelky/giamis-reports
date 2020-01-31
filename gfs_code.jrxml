@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gsf_code" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0833abf7-0bdd-4015-9e22-30013de237f4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="GiamisDb"/>
+	<queryString language="SQL">
+		<![CDATA[select code,description from gfs_codes]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="gfs_codes"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="gfs_codes"/>
+	</field>
+	<group name="code">
+		<groupExpression><![CDATA[$F{code}]]></groupExpression>
+	</group>
+	<group name="description">
+		<groupExpression><![CDATA[$F{description}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="150" y="60" width="262" height="20" uuid="b13cbb25-441f-489f-93a7-488a9ae1127c"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[United Replic Of Tanzania]]></text>
+			</staticText>
+			<image>
+				<reportElement x="240" y="0" width="60" height="60" uuid="e96c2ab0-d172-467c-bcb8-cd34fb4a6a0f"/>
+				<imageExpression><![CDATA["C:/Users/Hp/Desktop/System Image/download.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="146" y="0" width="262" height="20" uuid="d5258ca4-08c9-455d-9cb3-b630b6c77182"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GFS Codes]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="b764e305-3b99-4bb1-beeb-a5481723a3be"/>
+				<text><![CDATA[GFS Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="1" width="100" height="30" uuid="c717130a-1f98-4d8a-b259-16b03f4a92bb"/>
+				<text><![CDATA[Code Description]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="0" width="100" height="30" uuid="08b8a8cf-eb37-4cf7-8bb1-193e9b82de36"/>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="30" uuid="b2ba7c42-99ee-4f23-bbcb-ae5a2e3cc86d"/>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<line>
+				<reportElement x="190" y="22" width="360" height="1" uuid="353d2082-7822-4303-b79d-4c392f2e45c2"/>
+			</line>
+			<staticText>
+				<reportElement x="190" y="4" width="185" height="18" uuid="28e382e7-927d-44a3-b7d3-5835cfc41272"/>
+				<text><![CDATA[Report Generated From GiAMIS © 2019]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="375" y="2" width="95" height="21" uuid="97f4111c-1740-4589-85bc-a03def8f84e9"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="465" y="2" width="89" height="21" uuid="1786df32-7043-4da1-acea-2a49b8204841"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="2" width="10" height="20" uuid="77c04f4c-3b42-446a-9559-4cfc1825c3d0"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="50" y="2" width="10" height="20" uuid="55f5c635-0d15-4acc-84b1-d72e910f9fbd"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="2" width="29" height="20" uuid="131924cc-94fa-4069-b905-b3ed261e039a"/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="2" width="10" height="20" uuid="debc518f-5988-44aa-9d77-6c8aacf2a237"/>
+				<text><![CDATA[of]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
