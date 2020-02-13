@@ -82,7 +82,7 @@ etm.reviewed_date as reviewed_on,
 etm.meeting_date,
 etm.any_other_issue,
 etm.venue,
-e.name as title,
+e.description as title,
 ap.objective as general_objective,
 e.start_date || '-' || e.end_date as period,
 e.audit_type

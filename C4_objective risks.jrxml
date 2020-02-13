@@ -9,29 +9,27 @@
 		<![CDATA[select
   ou.name as organisation,
   ou2.name as client,
-  e.name as title,
+  e.description as title,
   e.start_date || '-' || e.end_date as period,
   e.audit_type,
   sp.description as objective,
-  r.name as risk,
-  r.code as risk_code,
-  resAud.impact as res_impact,
-  resAud.likelihood as res_likelihood,
-  (resAud.impact * resAud.likelihood) as res_rating,
-  case when  (resAud.impact * resAud.likelihood)  >=  1 and  (resAud.impact * resAud.likelihood) <= 4  then 'Low'
-             when  (resAud.impact * resAud.likelihood) >= 5 and  (resAud.impact * resAud.likelihood) <= 9 then 'Moderate'
-             when  (resAud.impact * resAud.likelihood) >= 10 and  (resAud.impact * resAud.likelihood) <= 14 then 'High'
-             when  (resAud.impact * resAud.likelihood) >= 15 and  (resAud.impact * resAud.likelihood) <= 25 then 'Extreme'
+  er.description as risk,
+  er.code as risk_code,
+  er.impact as res_impact,
+  er.likelihood as res_likelihood,
+  (er.impact * er.likelihood) as res_rating,
+  case when  (er.impact * er.likelihood)  >=  1 and  (er.impact * er.likelihood) <= 4  then 'Low'
+             when  (er.impact * er.likelihood) >= 5 and  (er.impact * er.likelihood) <= 9 then 'Moderate'
+             when  (er.impact * er.likelihood) >= 10 and  (er.impact * er.likelihood) <= 14 then 'High'
+             when  (er.impact * er.likelihood) >= 15 and  (er.impact * er.likelihood) <= 25 then 'Extreme'
              else 'Undefined'
   end as res_status
 from engagement_objective_risks as er
-join risks as r on r.id = er.risk_id
 join specific_objectives as sp on sp.id = er.specific_objective_id
 join engagements as e on e.id = sp.engagement_id
 join organisation_units as ou on ou.id = e.organisation_unit_id
 join organisation_units as ou2 on ou2.id = e.auditee
-left join risk_ratings as resAud on resAud.risk_id = r.id and resAud.type='INHERENT' and (resAud.source='MANAGEMENT' or resAud.source='ENGAGEMENT')
-where e.id = 2301]]>
+where e.id = $P{engagementId}]]>
 	</queryString>
 	<field name="organisation" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="organisation"/>

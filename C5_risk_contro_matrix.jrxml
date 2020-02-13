@@ -64,26 +64,24 @@
  ic.area_of_responsibility,
  ic.
  criteria,
- r.name as risk,
- r.code as risk_code,
+ eor.description as risk,
+ eor.code as risk_code,
  rcm.id as mapped,
-  resAud.impact as res_impact,
-  resAud.likelihood as res_likelihood,
-  (resAud.impact * resAud.likelihood) as res_rating,
-  case when  (resAud.impact * resAud.likelihood)  >=  1 and  (resAud.impact * resAud.likelihood) <= 4  then 'Low'
-             when  (resAud.impact * resAud.likelihood) >= 5 and  (resAud.impact * resAud.likelihood) <= 9 then 'Moderate'
-             when  (resAud.impact * resAud.likelihood) >= 10 and  (resAud.impact * resAud.likelihood) <= 14 then 'High'
-             when  (resAud.impact * resAud.likelihood) >= 15 and  (resAud.impact * resAud.likelihood) <= 25 then 'Extreme'
+  eor.impact as res_impact,
+  eor.likelihood as res_likelihood,
+  (eor.impact * eor.likelihood) as res_rating,
+  case when  (eor.impact * eor.likelihood)  >=  1 and  (eor.impact * eor.likelihood) <= 4  then 'Low'
+             when  (eor.impact * eor.likelihood) >= 5 and  (eor.impact * eor.likelihood) <= 9 then 'Moderate'
+             when  (eor.impact * eor.likelihood) >= 10 and  (eor.impact * eor.likelihood) <= 14 then 'High'
+             when  (eor.impact * eor.likelihood) >= 15 and  (eor.impact * eor.likelihood) <= 25 then 'Extreme'
              else 'Undefined'
   end as res_status,
  rcm.is_key_control
 from risk_control_matrices as rcm
 join internal_controls as ic on ic.id =rcm.internal_control_id
 join engagement_objective_risks as eor on eor.id = rcm.engagement_objective_risk_id
-join risks as r on r.id = eor.risk_id
 join specific_objectives as sp on sp.id = eor.specific_objective_id
-left join risk_ratings as resAud on resAud.risk_id = r.id and resAud.type='INHERENT' and (resAud.source='MANAGEMENT' or resAud.source='ENGAGEMENT')
-where sp.engagement_id = 2301]]>
+where sp.engagement_id = $P{engagementId}]]>
 		</queryString>
 		<field name="control" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="control"/>
@@ -145,7 +143,7 @@ etm.reviewed_date as reviewed_on,
 etm.meeting_date,
 etm.any_other_issue,
 etm.venue,
-e.name as title,
+e.description as title,
 ap.objective as general_objective,
 e.start_date || '-' || e.end_date as period,
 e.audit_type
@@ -396,6 +394,9 @@ where e.id = $P{engagementId}]]>
 				<crosstabDataset>
 					<dataset>
 						<datasetRun subDataset="Internal Controls" uuid="26c7fe5a-50af-4d58-a49e-170740634a63">
+                            <datasetParameter name="engagementId">
+                                <datasetParameterExpression><![CDATA[$P{engagementId}]]></datasetParameterExpression>
+                            </datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
