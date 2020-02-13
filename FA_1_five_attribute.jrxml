@@ -5,53 +5,20 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="367"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="622"/>
-	<subDataset name="Work Done" whenResourceMissingType="Empty" uuid="2d58ae59-bac4-4740-b285-c05a5180ce68">
-		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
-		<parameter name="engagementProcedureId" class="java.lang.Long"/>
-		<queryString language="SQL">
-			<![CDATA[select
-name,
-code
-from work_programs
-where engagement_procedure_id = $P{engagementProcedureId}]]>
-		</queryString>
-		<field name="name" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="name"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="work_programs"/>
-		</field>
-		<field name="code" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="code"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="work_programs"/>
-		</field>
-	</subDataset>
-	<subDataset name="Result" uuid="398ac976-88a3-4368-b1dd-43f617614bff">
+	<subDataset name="Recommendation" uuid="e28f161f-d89a-43f0-8351-4e9c3a2a60b9">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
-		<parameter name="engagementProcedureId" class="java.lang.Long"/>
+		<parameter name="engagementFindingId" class="java.lang.Long"/>
 		<queryString language="SQL">
 			<![CDATA[select 
- ei.name as item,
- wd.code as wd_code,
- case when
-   etr.is_ok  then 'OK' else ef.five_attribute end as score
-from engagement_test_results as etr
-join engagement_items as ei on ei.id = etr.engagement_item_id
-join work_programs as wd on wd.id = etr.work_program_id
-left join engagement_findings as ef on ef.work_program_id = wd.id
-where etr.engagement_procedure_id = $P{engagementProcedureId}]]>
+description
+ from  
+eng_finding_recommendations 
+where  engagement_finding_id =$P{engagementFindingId}]]>
 		</queryString>
-		<field name="item" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="item"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_items"/>
-		</field>
-		<field name="wd_code" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="wd_code"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="work_programs"/>
-		</field>
-		<field name="score" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.label" value="score"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_test_results"/>
+		<field name="description" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="description"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="eng_finding_recommendations"/>
 		</field>
 	</subDataset>
 	<parameter name="engagementFindingId" class="java.lang.Long"/>
@@ -74,7 +41,8 @@ ef.condition,
 ef.recommendation,
 ef.category,
 ef.sub_category,
-ef.implication
+ef.implication,
+ef.implement_status
 from 
 engagement_findings as ef
 join engagement_procedures as ep on ef.engagement_procedure_id= ep.id
@@ -85,7 +53,7 @@ join specific_objectives as so on so.id = eor.specific_objective_id
 join engagements as e on e.id = so.engagement_id
 join organisation_units as ou on ou.id = e.organisation_unit_id
 join organisation_units as adt on adt.id = e.auditee
-where ef.id = $P{engagementFindingId} ]]>
+where ef.id = $P{engagementFindingId}]]>
 	</queryString>
 	<field name="organisation" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="organisation"/>
@@ -152,6 +120,10 @@ where ef.id = $P{engagementFindingId} ]]>
 	</field>
 	<field name="implication" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="implication"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
+	</field>
+	<field name="implement_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="implement_status"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
 	</field>
 	<background>
@@ -483,9 +455,9 @@ where ef.id = $P{engagementFindingId} ]]>
 		</band>
 	</title>
 	<detail>
-		<band height="335" splitType="Stretch">
+		<band height="305" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="52" width="108" height="25" uuid="f919414d-134d-4a5b-9e13-836cb5602113">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="52" width="108" height="25" uuid="f919414d-134d-4a5b-9e13-836cb5602113">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -500,14 +472,15 @@ where ef.id = $P{engagementFindingId} ]]>
 					<font fontName="SansSerif" size="10" isBold="true"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="48"/>
 				</textElement>
-				<text><![CDATA[Engagement Objective]]></text>
+				<text><![CDATA[Objective]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="109" y="52" width="442" height="24" uuid="cb5d920f-b843-44de-babd-466c24ec02fd">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="52" width="442" height="25" uuid="cb5d920f-b843-44de-babd-466c24ec02fd">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -521,7 +494,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<textFieldExpression><![CDATA[$F{objective}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="125" width="108" height="24" uuid="5594ce04-be74-4fd7-80df-06c6e3cc028e">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="125" width="108" height="24" uuid="5594ce04-be74-4fd7-80df-06c6e3cc028e">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -538,12 +511,13 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<text><![CDATA[Test Performed]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="109" y="126" width="444" height="24" uuid="3a0476fe-790a-4bcf-9c4a-d30f99050ad4">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="125" width="444" height="24" uuid="3a0476fe-790a-4bcf-9c4a-d30f99050ad4">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -557,7 +531,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<textFieldExpression><![CDATA[$F{procedure}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="101" width="108" height="23" uuid="f9667f13-dc25-4b70-80fb-4a283d61f57a">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="101" width="108" height="23" uuid="f9667f13-dc25-4b70-80fb-4a283d61f57a">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -574,12 +548,13 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<text><![CDATA[Criteria]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="109" y="101" width="443" height="24" uuid="01ec1efc-cf02-47e2-80c3-7649669cc2c7">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="101" width="443" height="23" uuid="01ec1efc-cf02-47e2-80c3-7649669cc2c7">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -593,7 +568,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<textFieldExpression><![CDATA[$F{criteria}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="78" width="108" height="22" uuid="a2ca206f-eb3b-45dc-891e-51df65fb0afa">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="78" width="108" height="22" uuid="a2ca206f-eb3b-45dc-891e-51df65fb0afa">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -610,12 +585,14 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<text><![CDATA[Condition]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="110" y="77" width="442" height="24" uuid="ef13e5be-eaa9-4009-bbaf-cf05c11f9bf8">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="110" y="78" width="442" height="22" uuid="ef13e5be-eaa9-4009-bbaf-cf05c11f9bf8">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -629,7 +606,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<textFieldExpression><![CDATA[$F{condition}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="150" width="108" height="24" uuid="f2ffb704-93bb-42b0-8abf-50c12dacd811">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="150" width="108" height="24" uuid="f2ffb704-93bb-42b0-8abf-50c12dacd811">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -647,7 +624,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<text><![CDATA[Causes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="2" y="175" width="108" height="24" uuid="d983058d-3d85-4e67-8576-73362aae9968">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="175" width="108" height="24" uuid="d983058d-3d85-4e67-8576-73362aae9968">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -665,7 +642,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<text><![CDATA[Effect/Implication]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="200" width="108" height="24" uuid="d1fd3438-179f-4c96-b4f3-ee0bf3a0cbbf">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="200" width="108" height="24" uuid="d1fd3438-179f-4c96-b4f3-ee0bf3a0cbbf">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -700,14 +677,15 @@ where ef.id = $P{engagementFindingId} ]]>
 					<font fontName="SansSerif" size="10" isBold="true"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="48"/>
 				</textElement>
-				<text><![CDATA[Recommendation]]></text>
+				<text><![CDATA[Recommendations]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="109" y="151" width="444" height="24" uuid="b556bf4d-b670-4b3d-9aec-f02f372201be">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="150" width="444" height="24" uuid="b556bf4d-b670-4b3d-9aec-f02f372201be">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -720,12 +698,13 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cause}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="109" y="176" width="444" height="24" uuid="652de9ab-a631-42e2-aeb5-b5ed54f131f5">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="175" width="444" height="24" uuid="652de9ab-a631-42e2-aeb5-b5ed54f131f5">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -738,8 +717,8 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{implication}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="110" y="200" width="444" height="24" uuid="09d82ef9-defe-44e6-912a-ac171938b202">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="110" y="200" width="444" height="24" uuid="09d82ef9-defe-44e6-912a-ac171938b202">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -757,7 +736,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<textFieldExpression><![CDATA[$F{action_plan_categorisation}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="0" width="108" height="25" uuid="7834a6b1-9ded-4f84-b55d-5ff84481bbbd">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="0" width="108" height="25" uuid="7834a6b1-9ded-4f84-b55d-5ff84481bbbd">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -774,12 +753,14 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<text><![CDATA[Finding]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="109" y="1" width="442" height="24" uuid="3400608b-483c-4008-8cab-0c7e9a09a43f">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="0" width="442" height="25" uuid="3400608b-483c-4008-8cab-0c7e9a09a43f">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -795,7 +776,7 @@ where ef.id = $P{engagementFindingId} ]]>
 				<textFieldExpression><![CDATA[$F{finding}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="26" width="108" height="25" uuid="cdb63220-3a99-4f97-992a-b997a59a643d">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="26" width="108" height="25" uuid="cdb63220-3a99-4f97-992a-b997a59a643d">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -812,12 +793,13 @@ where ef.id = $P{engagementFindingId} ]]>
 				</textElement>
 				<text><![CDATA[Category of Finding]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="109" y="26" width="442" height="24" uuid="490b34db-4f08-4d90-a07c-5e78ebf914d7">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="109" y="26" width="442" height="25" uuid="490b34db-4f08-4d90-a07c-5e78ebf914d7">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -829,6 +811,62 @@ where ef.id = $P{engagementFindingId} ]]>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="10" y="250" width="544" height="30" uuid="d92a9028-b23a-4624-b5f7-1add8340f8fe"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Recommendation" uuid="7c4bb46b-f3c0-4834-b1bd-b28d9ad70214">
+						<datasetParameter name="engagementFindingId">
+							<datasetParameterExpression><![CDATA[$P{engagementFindingId}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="544">
+						<textField>
+							<reportElement x="0" y="0" width="544" height="30" uuid="70bd482a-ea86-4015-b4dc-d2d14b1d1644"/>
+							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="281" width="108" height="24" uuid="a16886fc-fc21-48a9-a9c3-283e1eb7ef73">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#333333"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#333333"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="48"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="108" y="281" width="444" height="24" uuid="2a89fc41-185f-426f-bf96-1d46dd61d08f">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineColor="#333333"/>
+					<bottomPen lineWidth="0.5" lineColor="#333333"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{implement_status}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
