@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>MyReports</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>net.sf.jasperreports.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>net.sf.jasperreports.nature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>B1-1_Test_sheet.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/B1-1_Test_sheet.jrxml</location>
+		</link>
+		<link>
+			<name>BA_engagement_objective.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/BA_engagement_objective.jrxml</location>
+		</link>
+		<link>
+			<name>C2_internal_control.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/C2_internal_control.jrxml</location>
+		</link>
+		<link>
+			<name>C5_risk_contro_matrix.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/C5_risk_contro_matrix.jrxml</location>
+		</link>
+		<link>
+			<name>CA engagement plan 2.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/CA engagement plan 2.jrxml</location>
+		</link>
+		<link>
+			<name>E1_engagement_letter.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/E1_engagement_letter.jrxml</location>
+		</link>
+		<link>
+			<name>E2_entrance_meeting.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/E2_entrance_meeting.jrxml</location>
+		</link>
+		<link>
+			<name>FA_1_five_attribute.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/FA_1_five_attribute.jrxml</location>
+		</link>
+		<link>
+			<name>invitation_letter.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/invitation_letter.jrxml</location>
+		</link>
+		<link>
+			<name>transmital_letter .jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/transmital_letter .jrxml</location>
+		</link>
+	</linkedResources>
+</projectDescription>

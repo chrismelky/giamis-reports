@@ -149,62 +149,66 @@ where em.id = $P{engagementMemberId}]]>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["SUBJECT: ENGAGEMENT LETTER "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["SUBJECT: SUBMISSION FOR ENGAGEMENT "]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="281" splitType="Stretch">
+		<band height="223" splitType="Stretch">
 			<staticText>
 				<reportElement x="12" y="5" width="140" height="14" uuid="5bac7a63-06fc-4932-9f6d-e3bcb45a7826"/>
 				<text><![CDATA[The heading above refers.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="181" width="550" height="14" uuid="5931f758-5908-4c93-a449-953ca0c3e3c1"/>
-				<text><![CDATA[Looking forward to quality work, timely completion and submission of audit report. Wishing you all the best in executing the assigned task.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="12" y="198" width="140" height="14" uuid="a9a7b30b-6e86-47fc-9ca9-49be694a1901"/>
+				<reportElement x="12" y="144" width="140" height="14" uuid="a9a7b30b-6e86-47fc-9ca9-49be694a1901"/>
 				<text><![CDATA[Regards]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="239" width="56" height="18" uuid="1ee2124b-b6ae-448f-ac5f-3e695dd3a2f6"/>
+				<reportElement x="12" y="185" width="56" height="18" uuid="1ee2124b-b6ae-448f-ac5f-3e695dd3a2f6"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TITLE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="219" width="56" height="18" uuid="df907546-22cf-4ddb-963d-284584e51158"/>
+				<reportElement x="11" y="165" width="56" height="18" uuid="df907546-22cf-4ddb-963d-284584e51158"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SIGNATURE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="259" width="56" height="18" uuid="5e9e653d-4159-4478-a9de-17a8e285edd9"/>
+				<reportElement x="12" y="205" width="56" height="18" uuid="5e9e653d-4159-4478-a9de-17a8e285edd9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NAME:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="11" y="24" width="550" height="77" uuid="c6b33e1a-b558-4124-b0ce-f9461013c240"/>
+				<reportElement x="11" y="24" width="550" height="36" uuid="c6b33e1a-b558-4124-b0ce-f9461013c240"/>
 				<textElement>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
-				<textFieldExpression><![CDATA["In accordance with our Financial Year 2019/2020 Risk Based Annual Audit plan, we will conduct an operational audit of audit for procurement – contract management for road works maintenance. The audit will be approached in the same manner as that of any other activity. The audit will examine if contract management for road works maintenance are complied with the Procurement Act 2011 and its Regulations 2013 and its amendment 2016 as well as contract terms."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["We have completed an audit of the…………….. procurement management. Our audit covered the reviews of procurement controls over advertisement, selection of contractors/ suppliers, contract preparation and monitoring."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="71" y="260" width="214" height="16" uuid="dee720a5-bb80-41c6-8aee-296439a986d5"/>
+				<reportElement x="71" y="206" width="214" height="16" uuid="dee720a5-bb80-41c6-8aee-296439a986d5"/>
 				<textFieldExpression><![CDATA[$F{from_user}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="9" y="106" width="550" height="60" uuid="d0e68a02-d203-4ef7-afe9-c9caf89a21e5"/>
-				<text><![CDATA[We will contact you in order to arrange an entrance conference to discuss the various aspects of our audit as well as to perform the audit assignment, which will held on 21 st January 2020 on 10:00 am at TARURA Ngara DC Council Manager’s office. The audit team members are Farde Abdallah and Twalibu Kisare. The team leader is Farde Abdallah. Should you have any question
-regarding this, please feel free to contact with team leader Farde Abdallah
-through 0652698252]]></text>
-			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="11" y="62" width="550" height="48" uuid="d50bbbf3-6bc7-480b-88d8-77649d277f64"/>
+				<textElement>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Controls were generally adequate and effective in mitigating the risks except for some shortcomings in correct interpretation of some of the provisions of the PPA (2011) and its related regulations, delay in procurement procedures, inadequate composition of PMU and non- production of monthly procurement progress reports. The details of these findings will be found in the attached report. Overall, however, the procurement appears to be meeting its major objectives."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="11" y="113" width="550" height="18" uuid="e94776ff-402f-49be-bc4b-0b03067587cf"/>
+				<textElement>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Corrective action has been initiated and is continuing to correct all reported findings."]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
