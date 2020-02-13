@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C2_internal_control" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee4f9252-264b-4a19-88d5-360e7a2b97c9">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="Crosstab_CH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
@@ -39,16 +39,23 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
+	<style name="ISCONTROL">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{is_control}]]></conditionExpression>
+			<style backcolor="#FCFBAE"/>
+		</conditionalStyle>
+	</style>
 	<subDataset name="Internal Controls" uuid="48947585-d7db-4fc9-9d0e-157a4dd490a2">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 		<parameter name="engagementId" class="java.lang.Long"/>
 		<queryString language="SQL">
 			<![CDATA[select 
  name,
  step_number,
  area_of_responsibility,
- criteria
+ criteria,
+ is_control
 from internal_controls
 where engagement_id = $P{engagementId}]]>
 		</queryString>
@@ -66,6 +73,10 @@ where engagement_id = $P{engagementId}]]>
 		</field>
 		<field name="criteria" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="criteria"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="internal_controls"/>
+		</field>
+		<field name="is_control" class="java.lang.Boolean">
+			<property name="com.jaspersoft.studio.field.label" value="is_control"/>
 			<property name="com.jaspersoft.studio.field.tree.path" value="internal_controls"/>
 		</field>
 	</subDataset>
@@ -222,7 +233,7 @@ where e.id = $P{engagementId}]]>
 				</textElement>
 				<text><![CDATA[Client:]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="67" y="5" width="337" height="20" uuid="9bf1b3e5-ad57-469a-bdd9-630df359e06f">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -282,7 +293,7 @@ where e.id = $P{engagementId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}+ " Engagement Objectives"]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="67" y="45" width="337" height="22" uuid="753e6142-440b-4b31-95d4-db6a4db6f2d4">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -343,7 +354,7 @@ where e.id = $P{engagementId}]]>
 				<crosstabHeaderCell>
 					<cellContents>
 						<staticText>
-							<reportElement style="Crosstab_CG" x="0" y="0" width="34" height="30" forecolor="#333333" uuid="77a03daf-a112-4c70-a848-83e1fb53cb65">
+							<reportElement style="Crosstab_CG" x="0" y="0" width="34" height="30" forecolor="#333333" backcolor="#F0F8FF" uuid="77a03daf-a112-4c70-a848-83e1fb53cb65">
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -392,7 +403,7 @@ where e.id = $P{engagementId}]]>
 							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<textField>
-								<reportElement style="Crosstab_CT" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="100" height="30" forecolor="#FFFFFF" uuid="8d81c082-5d90-4f67-9ef9-08d0bda997df">
+								<reportElement style="Crosstab_CT" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="100" height="30" forecolor="#000000" backcolor="#F2F9FC" uuid="8d81c082-5d90-4f67-9ef9-08d0bda997df">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -411,7 +422,7 @@ where e.id = $P{engagementId}]]>
 						<cellContents mode="Opaque" style="Crosstab_CT">
 							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 							<staticText>
-								<reportElement style="Crosstab_CG" x="0" y="0" width="45" height="30" forecolor="#333333" uuid="9f042125-9e5e-46f7-bd8b-806af476249d">
+								<reportElement style="Crosstab_CG" x="0" y="0" width="45" height="30" forecolor="#333333" backcolor="#F2F8FC" uuid="9f042125-9e5e-46f7-bd8b-806af476249d">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -435,7 +446,7 @@ where e.id = $P{engagementId}]]>
 				<crosstabCell width="101" height="29">
 					<cellContents mode="Opaque" style="Crosstab_CD">
 						<textField isBlankWhenNull="true">
-							<reportElement stretchType="ElementGroupHeight" x="0" y="0" width="101" height="29" uuid="9ca0bf3b-978d-48e8-8219-bb560b9d85f3">
+							<reportElement style="ISCONTROL" stretchType="ElementGroupHeight" x="0" y="0" width="101" height="29" uuid="9ca0bf3b-978d-48e8-8219-bb560b9d85f3">
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
