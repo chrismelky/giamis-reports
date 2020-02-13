@@ -41,8 +41,8 @@
 	</style>
 	<style name="ISCONTROL">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{is_control}]]></conditionExpression>
-			<style backcolor="#FCFBAE"/>
+			<conditionExpression><![CDATA[$V{is_control}]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FCFBAE"/>
 		</conditionalStyle>
 	</style>
 	<subDataset name="Internal Controls" uuid="48947585-d7db-4fc9-9d0e-157a4dd490a2">
@@ -410,6 +410,9 @@ where e.id = $P{engagementId}]]>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 									<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 								</reportElement>
+								<box>
+									<pen lineWidth="0.5" lineColor="#333333"/>
+								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font isBold="true"/>
 									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
@@ -428,6 +431,12 @@ where e.id = $P{engagementId}]]>
 									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 								</reportElement>
+								<box>
+									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#333333"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#333333"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#333333"/>
+								</box>
 								<textElement>
 									<font isBold="true"/>
 									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
@@ -442,6 +451,9 @@ where e.id = $P{engagementId}]]>
 				</measure>
 				<measure name="criteria_MEASURE" class="java.lang.String">
 					<measureExpression><![CDATA[$F{criteria}]]></measureExpression>
+				</measure>
+				<measure name="is_control" class="java.lang.Boolean">
+					<measureExpression><![CDATA[$F{is_control}]]></measureExpression>
 				</measure>
 				<crosstabCell width="101" height="29">
 					<cellContents mode="Opaque" style="Crosstab_CD">
