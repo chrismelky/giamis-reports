@@ -37,6 +37,11 @@
 			<location>C:/Users/Matoke/Desktop/giamis-reports/C2_internal_control.jrxml</location>
 		</link>
 		<link>
+			<name>C4_objective risks.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/C4_objective risks.jrxml</location>
+		</link>
+		<link>
 			<name>C5_risk_contro_matrix.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/C5_risk_contro_matrix.jrxml</location>
@@ -45,6 +50,11 @@
 			<name>CA engagement plan 2.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/CA engagement plan 2.jrxml</location>
+		</link>
+		<link>
+			<name>E10_team_meeting.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/E10_team_meeting.jrxml</location>
 		</link>
 		<link>
 			<name>E1_engagement_letter.jrxml</name>
@@ -57,9 +67,44 @@
 			<location>C:/Users/Matoke/Desktop/giamis-reports/E2_entrance_meeting.jrxml</location>
 		</link>
 		<link>
+			<name>E3_exit_meeting.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/E3_exit_meeting.jrxml</location>
+		</link>
+		<link>
+			<name>E3_interim_meeting.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/E3_interim_meeting.jrxml</location>
+		</link>
+		<link>
 			<name>FA_1_five_attribute.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/FA_1_five_attribute.jrxml</location>
+		</link>
+		<link>
+			<name>Template A4.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/Template A4.jrxml</location>
+		</link>
+		<link>
+			<name>audit_plan_activity.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/audit_plan_activity.jrxml</location>
+		</link>
+		<link>
+			<name>audit_plan_cost.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/audit_plan_cost.jrxml</location>
+		</link>
+		<link>
+			<name>audit_report.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/audit_report.jrxml</location>
+		</link>
+		<link>
+			<name>complience_plan.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/complience_plan.jrxml</location>
 		</link>
 		<link>
 			<name>finding_summary.jrxml</name>
@@ -67,14 +112,49 @@
 			<location>C:/Users/Matoke/Desktop/giamis-reports/finding_summary.jrxml</location>
 		</link>
 		<link>
+			<name>followup.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/followup.jrxml</location>
+		</link>
+		<link>
 			<name>invitation_letter.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/invitation_letter.jrxml</location>
 		</link>
 		<link>
-			<name>transmital_letter .jrxml</name>
+			<name>pre_audit_report.jrxml</name>
 			<type>1</type>
-			<location>C:/Users/Matoke/Desktop/giamis-reports/transmital_letter .jrxml</location>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/pre_audit_report.jrxml</location>
+		</link>
+		<link>
+			<name>rbap.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/rbap.jrxml</location>
+		</link>
+		<link>
+			<name>report_template.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/report_template.jrxml</location>
+		</link>
+		<link>
+			<name>risk_assesment_report.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/risk_assesment_report.jrxml</location>
+		</link>
+		<link>
+			<name>risk_register.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/risk_register.jrxml</location>
+		</link>
+		<link>
+			<name>stategic.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/stategic.jrxml</location>
+		</link>
+		<link>
+			<name>trasmittal_letter.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/trasmittal_letter.jrxml</location>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -39,7 +39,7 @@ join financial_years as fy on fy.id = e.financial_year_id
 join auditable_areas as aa on aa.id = e.auditable_area_id
 left join organisation_units as ou on ou.id = e.organisation_unit_id
 left join organisation_units as cl on cl.id = e.auditee
-left join communication_letters as co on co.engagement_id = e.id and type = 'ENGAGEMENT_LETTER'
+left join communication_letters as co on co.engagement_id = e.id and type ='TRANSIMITTAL_LETTER'
 where e.id = $P{engagementId}]]>
 	</queryString>
 	<field name="engagment_name" class="java.lang.String">
@@ -97,7 +97,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[The United Republic of Tanzania]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="551" y="4" width="21" height="18" forecolor="#FA2925" uuid="eb236d34-61cd-480a-a616-b4c43b1206c5"/>
+				<reportElement x="551" y="4" width="21" height="18" uuid="eb236d34-61cd-480a-a616-b4c43b1206c5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>

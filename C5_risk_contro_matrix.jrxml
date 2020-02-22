@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C5_risk_control_matrix" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee4f9252-264b-4a19-88d5-360e7a2b97c9">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+	<style name="Crosstab 1_CH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -12,7 +12,7 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Crosstab_CT" mode="Opaque" backcolor="#005FB3">
+	<style name="Crosstab 1_CG" mode="Opaque" backcolor="#BFE1FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -21,7 +21,7 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
+	<style name="Crosstab 1_CT" mode="Opaque" backcolor="#005FB3">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -30,7 +30,7 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFE1FF">
+	<style name="Crosstab 1_CD" mode="Opaque" backcolor="#FFFFFF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -38,50 +38,53 @@
 			<bottomPen lineWidth="0.5" lineColor="#000000"/>
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
-	</style>
-	<style name="isKey" mode="Opaque" backcolor="#FFFFFF" pattern="">
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$V{isKey}]]></conditionExpression>
-			<style mode="Opaque" forecolor="#FFFFFF" backcolor="#AFFC74"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$V{mapped_MEASURE} == 1]]></conditionExpression>
-			<style forecolor="#FFFFFF" backcolor="#D4FC9F"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$V{mapped_MEASURE} == 0]]></conditionExpression>
-			<style forecolor="#FFFFFF" backcolor="#FFFFFF"/>
-		</conditionalStyle>
 	</style>
 	<subDataset name="Internal Controls" uuid="48947585-d7db-4fc9-9d0e-157a4dd490a2">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 		<parameter name="engagementId" class="java.lang.Long"/>
 		<queryString language="SQL">
 			<![CDATA[select 
+ name as control,
+ step_number,
+ area_of_responsibility,
+ criteria,
+ 'WalkThrough' as risk,
+ null as risk_code,
+ null as mapped,
+ null as res_impact,
+ null as res_likelihood,
+ null as res_status,
+ null as is_key_control,
+ is_control,
+ document_name
+from internal_controls
+where engagement_id = 31751
+union all
+select 
  ic.name as control,
  ic.step_number,
  ic.area_of_responsibility,
- ic.
- criteria,
+ ic.criteria,
  eor.description as risk,
  eor.code as risk_code,
  rcm.id as mapped,
-  eor.impact as res_impact,
-  eor.likelihood as res_likelihood,
-  (eor.impact * eor.likelihood) as res_rating,
-  case when  (eor.impact * eor.likelihood)  >=  1 and  (eor.impact * eor.likelihood) <= 4  then 'Low'
+ eor.impact as res_impact,
+ eor.likelihood as res_likelihood,
+ case when  (eor.impact * eor.likelihood)  >=  1 and  (eor.impact * eor.likelihood) <= 4  then 'Low'
              when  (eor.impact * eor.likelihood) >= 5 and  (eor.impact * eor.likelihood) <= 9 then 'Moderate'
              when  (eor.impact * eor.likelihood) >= 10 and  (eor.impact * eor.likelihood) <= 14 then 'High'
              when  (eor.impact * eor.likelihood) >= 15 and  (eor.impact * eor.likelihood) <= 25 then 'Extreme'
              else 'Undefined'
-  end as res_status,
- rcm.is_key_control
+ end as res_status,
+ rcm.is_key_control,
+ null as is_control,
+ null as document_name
 from risk_control_matrices as rcm
 join internal_controls as ic on ic.id =rcm.internal_control_id
 join engagement_objective_risks as eor on eor.id = rcm.engagement_objective_risk_id
 join specific_objectives as sp on sp.id = eor.specific_objective_id
-where sp.engagement_id = $P{engagementId}]]>
+where sp.engagement_id = 31751]]>
 		</queryString>
 		<field name="control" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="control"/>
@@ -119,15 +122,18 @@ where sp.engagement_id = $P{engagementId}]]>
 			<property name="com.jaspersoft.studio.field.label" value="res_likelihood"/>
 			<property name="com.jaspersoft.studio.field.tree.path" value="risk_ratings"/>
 		</field>
-		<field name="res_rating" class="java.lang.Integer">
-			<property name="com.jaspersoft.studio.field.label" value="res_rating"/>
-		</field>
 		<field name="res_status" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="res_status"/>
 		</field>
 		<field name="is_key_control" class="java.lang.Boolean">
 			<property name="com.jaspersoft.studio.field.label" value="is_key_control"/>
 			<property name="com.jaspersoft.studio.field.tree.path" value="risk_control_matrices"/>
+		</field>
+		<field name="is_control" class="java.lang.Boolean">
+			<property name="com.jaspersoft.studio.field.label" value="is_control"/>
+		</field>
+		<field name="document_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="document_name"/>
 		</field>
 	</subDataset>
 	<parameter name="engagementId" class="java.lang.Long"/>
@@ -262,7 +268,7 @@ where e.id = $P{engagementId}]]>
 		</band>
 	</title>
 	<detail>
-		<band height="292" splitType="Stretch">
+		<band height="160" splitType="Stretch">
 			<staticText>
 				<reportElement mode="Opaque" x="3" y="5" width="42" height="20" uuid="77f7ce1b-e651-400e-a829-e35512821a1d">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -383,284 +389,35 @@ where e.id = $P{engagementId}]]>
 				</textElement>
 				<text><![CDATA[Period:]]></text>
 			</staticText>
-			<crosstab columnBreakOffset="10000" ignoreWidth="true">
-				<reportElement x="3" y="90" width="797" height="202" uuid="307d27ab-3464-4070-9cbb-189182b19996">
+			<crosstab>
+				<reportElement x="10" y="100" width="790" height="60" uuid="f45181df-3bdb-483f-9684-0b94b0a21ae1">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
-					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
-					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
-					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab 1_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab 1_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab 1_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab 1_CD"/>
 				</reportElement>
 				<crosstabDataset>
 					<dataset>
-						<datasetRun subDataset="Internal Controls" uuid="26c7fe5a-50af-4d58-a49e-170740634a63">
-                            <datasetParameter name="engagementId">
-                                <datasetParameterExpression><![CDATA[$P{engagementId}]]></datasetParameterExpression>
-                            </datasetParameter>
+						<datasetRun subDataset="Internal Controls" uuid="342bed0e-7755-4f7e-ab60-37fcff96d6aa">
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
 				</crosstabDataset>
-				<crosstabHeaderCell>
-					<cellContents>
-						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
-						<staticText>
-							<reportElement mode="Opaque" x="160" y="0" width="90" height="20" backcolor="#FAF6B1" uuid="cd3123a9-c061-462d-8cba-8036edf531b0">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="8" isBold="true"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[Step No.]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="160" y="61" width="90" height="49" backcolor="#FAF6B1" uuid="28006a68-e738-46cd-93d9-d870bf9ddd47">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="8" isBold="true"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[Responsibility]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="160" y="110" width="90" height="30" backcolor="#FAF6B1" uuid="5a02e1f2-5516-4950-a3d5-9396ec78b07c">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="8" isBold="true"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[Criteria]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="0" y="140" width="160" height="20" backcolor="#FAF6B1" uuid="dce439ed-5021-466f-8693-dbc6cfc04196"/>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="8" isBold="true"/>
-							</textElement>
-							<text><![CDATA[Risk Description]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="160" y="140" width="30" height="20" backcolor="#FCDCDC" uuid="f33cad19-09de-461d-9788-dbdba6dd632b">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="7"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[Impact]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="190" y="140" width="30" height="20" backcolor="#FCDCDC" uuid="2de2e1bb-2981-4aad-b4fe-576103cb99c7">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								<property name="com.jaspersoft.studio.unit.height" value="px"/>
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="5"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[likelihood]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="220" y="140" width="30" height="20" backcolor="#FCDCDC" uuid="80d55ef9-225a-40e4-ae74-5ed293346994">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								<property name="com.jaspersoft.studio.unit.height" value="px"/>
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="7"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[Status]]></text>
-						</staticText>
-						<staticText>
-							<reportElement mode="Opaque" x="160" y="20" width="90" height="41" backcolor="#FAF6B1" uuid="b04fc676-0206-4cf7-903c-ec8e2108120d">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-							</reportElement>
-							<box>
-								<topPen lineWidth="0.25" lineColor="#333333"/>
-								<leftPen lineWidth="0.25" lineColor="#333333"/>
-								<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								<rightPen lineWidth="0.25" lineColor="#333333"/>
-							</box>
-							<textElement textAlignment="Left" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="8" isBold="true"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<text><![CDATA[Control Description]]></text>
-						</staticText>
-					</cellContents>
-				</crosstabHeaderCell>
-				<rowGroup name="risk_code" width="30" totalPosition="End">
-					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{risk_code}]]></bucketExpression>
-					</bucket>
-					<crosstabRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<textField>
-								<reportElement x="0" y="0" width="30" height="40" uuid="e87c2a39-4fd9-4295-8d0d-cba95e4ac29c">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<textElement verticalAlignment="Middle">
-									<font fontName="SansSerif" size="8"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{risk_code}]]></textFieldExpression>
-							</textField>
-						</cellContents>
-					</crosstabRowHeader>
-					<crosstabTotalRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CT">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						</cellContents>
-					</crosstabTotalRowHeader>
-				</rowGroup>
-				<rowGroup name="risk" width="220" totalPosition="End">
+				<rowGroup name="risk" width="200" totalPosition="End">
 					<bucket class="java.lang.String">
 						<bucketExpression><![CDATA[$F{risk}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+						<cellContents mode="Opaque" style="Crosstab 1_CH">
 							<textField>
-								<reportElement x="0" y="0" width="130" height="40" uuid="ea65d910-62f8-406d-95f7-0eeeab17170e">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<box>
-									<bottomPen lineWidth="0.25" lineColor="#333333"/>
-									<rightPen lineWidth="0.25" lineColor="#333333"/>
-								</box>
-								<textElement verticalAlignment="Middle">
-									<font fontName="SansSerif" size="8"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
+								<reportElement x="0" y="0" width="200" height="20" uuid="231e5f84-47d3-40d9-8558-487376e23197"/>
 								<textFieldExpression><![CDATA[$V{risk}]]></textFieldExpression>
-							</textField>
-							<textField>
-								<reportElement x="130" y="0" width="30" height="40" uuid="100659a9-3586-44c8-aec2-b9af17e7f6ff">
-									<property name="com.jaspersoft.studio.unit.y" value="px"/>
-									<property name="com.jaspersoft.studio.unit.height" value="px"/>
-									<property name="com.jaspersoft.studio.unit.width" value="px"/>
-									<property name="com.jaspersoft.studio.unit.x" value="px"/>
-								</reportElement>
-								<box>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#333333"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="SansSerif" size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{impact}]]></textFieldExpression>
-							</textField>
-							<textField>
-								<reportElement x="160" y="0" width="30" height="40" uuid="489b59be-0c07-4a93-8090-639647ea0d69">
-									<property name="com.jaspersoft.studio.unit.height" value="px"/>
-									<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								</reportElement>
-								<box>
-									<pen lineWidth="0.25"/>
-									<bottomPen lineWidth="0.25" lineColor="#333333"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="SansSerif" size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{likelihood}]]></textFieldExpression>
-							</textField>
-							<textField>
-								<reportElement x="190" y="0" width="30" height="40" uuid="1834ad63-846f-4e7e-9a40-3e757b568a06">
-									<property name="com.jaspersoft.studio.unit.y" value="px"/>
-									<property name="com.jaspersoft.studio.unit.height" value="px"/>
-									<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								</reportElement>
-								<box>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#333333"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="SansSerif" size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{rating}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabRowHeader>
 					<crosstabTotalRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CG">
+						<cellContents mode="Opaque" style="Crosstab 1_CT">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						</cellContents>
 					</crosstabTotalRowHeader>
@@ -670,135 +427,15 @@ where e.id = $P{engagementId}]]>
 						<bucketExpression><![CDATA[$F{step_number}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<cellContents mode="Opaque" style="Crosstab 1_CH">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="39bb6610-0855-43d3-8241-1bd68befccbb">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<box>
-									<pen lineWidth="0.25" lineColor="#333333"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#333333"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement textAlignment="Center">
-									<font fontName="SansSerif" size="8"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
+								<reportElement x="0" y="0" width="110" height="20" uuid="114bb71a-5878-4bbd-8a82-3e2a88e24365"/>
 								<textFieldExpression><![CDATA[$V{step_number}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabColumnHeader>
 					<crosstabTotalColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CT">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</cellContents>
-					</crosstabTotalColumnHeader>
-				</columnGroup>
-				<columnGroup name="control" height="40" totalPosition="End">
-					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{control}]]></bucketExpression>
-					</bucket>
-					<crosstabColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<textField>
-								<reportElement x="0" y="0" width="90" height="40" uuid="44a8daab-96e7-4f8e-927f-df7c117d985a">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<box>
-									<pen lineWidth="0.25" lineColor="#333333"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#333333"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement>
-									<font fontName="SansSerif" size="8"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{control}]]></textFieldExpression>
-							</textField>
-						</cellContents>
-					</crosstabColumnHeader>
-					<crosstabTotalColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CG">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</cellContents>
-					</crosstabTotalColumnHeader>
-				</columnGroup>
-				<columnGroup name="area_of_responsibility" height="50" totalPosition="End">
-					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{area_of_responsibility}]]></bucketExpression>
-					</bucket>
-					<crosstabColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<textField>
-								<reportElement x="0" y="0" width="90" height="50" uuid="8c1e0d3c-a0da-47ea-af2e-fd5f4c54fd18">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<box>
-									<pen lineWidth="0.25" lineColor="#333333"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#333333"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement>
-									<font fontName="SansSerif" size="8"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{area_of_responsibility}]]></textFieldExpression>
-							</textField>
-						</cellContents>
-					</crosstabColumnHeader>
-					<crosstabTotalColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CG">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</cellContents>
-					</crosstabTotalColumnHeader>
-				</columnGroup>
-				<columnGroup name="criteria" height="50" totalPosition="End">
-					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{criteria}]]></bucketExpression>
-					</bucket>
-					<crosstabColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
-							<textField>
-								<reportElement x="0" y="0" width="90" height="30" uuid="738e75c6-b77b-4518-aa50-9c5d073f363a">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<box>
-									<pen lineWidth="0.25" lineColor="#333333"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#333333"/>
-									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement>
-									<font fontName="SansSerif" size="8"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{criteria}]]></textFieldExpression>
-							</textField>
-						</cellContents>
-					</crosstabColumnHeader>
-					<crosstabTotalColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CG">
+						<cellContents mode="Opaque" style="Crosstab 1_CT">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</cellContents>
 					</crosstabTotalColumnHeader>
@@ -806,76 +443,22 @@ where e.id = $P{engagementId}]]>
 				<measure name="mapped_MEASURE" class="java.lang.Integer" calculation="Count">
 					<measureExpression><![CDATA[$F{mapped}]]></measureExpression>
 				</measure>
-				<measure name="impact" class="java.lang.Integer">
-					<measureExpression><![CDATA[$F{res_impact}]]></measureExpression>
-				</measure>
-				<measure name="likelihood" class="java.lang.Integer">
-					<measureExpression><![CDATA[$F{res_likelihood}]]></measureExpression>
-				</measure>
-				<measure name="rating" class="java.lang.Integer">
-					<measureExpression><![CDATA[$F{res_rating}]]></measureExpression>
-				</measure>
-				<measure name="isKey" class="java.lang.Boolean">
-					<measureExpression><![CDATA[$F{is_key_control}]]></measureExpression>
-				</measure>
-				<crosstabCell width="90" height="40">
-					<cellContents mode="Opaque" style="Crosstab_CD">
+				<crosstabCell width="110" height="20">
+					<cellContents mode="Opaque" style="Crosstab 1_CD">
 						<textField>
-							<reportElement style="isKey" x="0" y="0" width="90" height="40" uuid="6ebea3c2-5733-4928-bf81-077c6b9da44a">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-							</reportElement>
-							<textElement verticalAlignment="Middle">
-								<font fontName="SansSerif" size="8"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
+							<reportElement x="0" y="0" width="110" height="20" uuid="b9fc2668-3fa4-4ab6-a60a-e329fc9ecced"/>
 							<textFieldExpression><![CDATA[$V{mapped_MEASURE}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="40" columnTotalGroup="step_number">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
+				<crosstabCell width="0" height="20" columnTotalGroup="step_number">
+					<cellContents mode="Opaque" style="Crosstab 1_CT"/>
 				</crosstabCell>
-				<crosstabCell width="0" height="40" columnTotalGroup="control">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="40" columnTotalGroup="area_of_responsibility">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="40" columnTotalGroup="criteria">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
-				</crosstabCell>
-				<crosstabCell width="90" height="0" rowTotalGroup="risk_code">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk_code" columnTotalGroup="step_number">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk_code" columnTotalGroup="control">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk_code" columnTotalGroup="area_of_responsibility">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk_code" columnTotalGroup="criteria">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="90" height="0" rowTotalGroup="risk">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
+				<crosstabCell width="110" height="0" rowTotalGroup="risk">
+					<cellContents mode="Opaque" style="Crosstab 1_CT"/>
 				</crosstabCell>
 				<crosstabCell width="0" height="0" rowTotalGroup="risk" columnTotalGroup="step_number">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk" columnTotalGroup="control">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk" columnTotalGroup="area_of_responsibility">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="risk" columnTotalGroup="criteria">
-					<cellContents mode="Opaque" style="Crosstab_CG"/>
+					<cellContents mode="Opaque" style="Crosstab 1_CT"/>
 				</crosstabCell>
 			</crosstab>
 		</band>

@@ -1,0 +1,4 @@
+e.process || ' ' || COALESCE(e.sub_process,' ') || '  ' || COALESCE(e.sub_sub_process,' ')   as title,
+to_char(e.start_date, 'dd Mon yyyy') || ' - ' || to_char(e.end_date,'dd Mon yyyy' ) as period,
+
+header colors #DEDCDC

@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.0.final using JasperReports Library version 6.5.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="854e0b10-917c-4e23-97d2-a4bac61e5a8b">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="risk_register" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="854e0b10-917c-4e23-97d2-a4bac61e5a8b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="307"/>
-	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="686"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="174"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="819"/>
+	<style name="RANK">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{in_status}.equals( "Low" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#2CF22F"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{in_status}.equals( "Moderate" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FCEA44"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{in_status}.equals( "High" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FA9237"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{in_status}.equals( "Extreme" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FC2E2B"/>
+		</conditionalStyle>
+	</style>
+	<style name="RES_RANK">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{res_status}.equals( "Low" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#2CF22F"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{res_status}.equals( "Moderate" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FCEA44"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{res_status}.equals( "High" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FA9237"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{res_status}.equals( "Extreme" )]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FC2E2B"/>
+		</conditionalStyle>
+	</style>
 	<parameter name="riskRegisterId" class="java.lang.Long"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
@@ -44,35 +80,42 @@ join objectives as o on o.id = t.objective_id
 join financial_years as f on f.id = rg.financial_year_id
 left join risk_ratings as inhMan on inhMan.risk_id = r.id and inhMan.type='INHERENT' and inhMan.source='MANAGEMENT' 
 left join risk_ratings as resMan on resMan.risk_id = r.id and resMan.type='RESIDUAL' and inhMan.source='MANAGEMENT'
-left join risk_ratings as resAud on resAud.risk_id = r.id and resAud.type='RESIDUAL' and resAud.source='AUDITOR'
 where rg.id = $P{riskRegisterId}]]>
 	</queryString>
 	<field name="financial_year" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="financial_years"/>
 	</field>
 	<field name="organisation" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="organisation"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="organisation_units"/>
 	</field>
 	<field name="risk" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="risk"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risks"/>
 	</field>
 	<field name="objective" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="objective"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="objectives"/>
 	</field>
 	<field name="risk_code" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="risk_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risks"/>
 	</field>
 	<field name="risk_owner" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="risk_owner"/>
 	</field>
 	<field name="risk_category" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="risk_category"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risk_categories"/>
 	</field>
 	<field name="in_impact" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="in_impact"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risk_ratings"/>
 	</field>
 	<field name="in_likelihood" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="in_likelihood"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risk_ratings"/>
 	</field>
 	<field name="in_rating" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="in_rating"/>
@@ -82,9 +125,11 @@ where rg.id = $P{riskRegisterId}]]>
 	</field>
 	<field name="res_impact" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="res_impact"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risk_ratings"/>
 	</field>
 	<field name="res_likelihood" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="res_likelihood"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="risk_ratings"/>
 	</field>
 	<field name="res_rating" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="res_rating"/>
@@ -134,16 +179,17 @@ where rg.id = $P{riskRegisterId}]]>
 	<columnHeader>
 		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="1" y="1" width="59" height="33" backcolor="#DEDCDC" uuid="7d5b0702-24a5-4d3a-9909-6e7660c285e0">
+				<reportElement mode="Opaque" x="1" y="1" width="44" height="33" backcolor="#DEDCDC" uuid="7d5b0702-24a5-4d3a-9909-6e7660c285e0">
 					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 					<property name="com.jaspersoft.studio.unit.tabStopWidth" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -160,11 +206,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -173,7 +215,7 @@ where rg.id = $P{riskRegisterId}]]>
 				<text><![CDATA[Category Of Risk]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="60" y="1" width="199" height="33" backcolor="#DEDCDC" uuid="2b1a6d8a-953b-406e-8145-369d0df546c9">
+				<reportElement mode="Opaque" x="45" y="1" width="214" height="33" backcolor="#DEDCDC" uuid="2b1a6d8a-953b-406e-8145-369d0df546c9">
 					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -181,11 +223,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -202,7 +240,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -218,7 +256,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -234,7 +272,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -250,7 +288,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -266,7 +304,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -282,7 +320,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -298,7 +336,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -314,7 +352,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -330,7 +368,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -346,7 +384,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -362,7 +400,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -378,7 +416,7 @@ where rg.id = $P{riskRegisterId}]]>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -390,15 +428,15 @@ where rg.id = $P{riskRegisterId}]]>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="1" y="0" width="59" height="20" uuid="dfed7021-72dc-432d-adb4-bf0c09454e5c">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="1" y="0" width="44" height="20" uuid="dfed7021-72dc-432d-adb4-bf0c09454e5c">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box padding="0">
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font size="7"/>
@@ -406,15 +444,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{objective}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="317" y="0" width="37" height="20" uuid="46741410-af8f-4365-93ef-8d8cdd7aebf4">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="317" y="0" width="37" height="20" uuid="46741410-af8f-4365-93ef-8d8cdd7aebf4">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font size="7"/>
@@ -422,15 +460,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{risk_code}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="60" y="0" width="199" height="20" uuid="6222f07b-1148-460a-9066-eec95e912758">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="45" y="0" width="214" height="20" uuid="6222f07b-1148-460a-9066-eec95e912758">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font size="7"/>
@@ -438,15 +476,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{risk}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="259" y="0" width="58" height="20" uuid="d4151d5e-16ec-46cb-8165-48f4fdba476c">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="259" y="0" width="58" height="20" uuid="d4151d5e-16ec-46cb-8165-48f4fdba476c">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font size="7"/>
@@ -454,15 +492,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{risk_category}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="354" y="0" width="42" height="20" uuid="dbb21267-05e3-4f26-9937-9ecc78ac0164">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="354" y="0" width="42" height="20" uuid="dbb21267-05e3-4f26-9937-9ecc78ac0164">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -470,15 +508,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{in_impact}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="396" y="0" width="54" height="20" uuid="92dfc911-d9d4-4b3b-81d4-a9a21ae1db26">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="396" y="0" width="54" height="20" uuid="92dfc911-d9d4-4b3b-81d4-a9a21ae1db26">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -486,15 +524,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{in_likelihood}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="450" y="0" width="37" height="20" uuid="e59101ad-f032-4b96-afde-f4ddad824058">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="450" y="0" width="37" height="20" uuid="e59101ad-f032-4b96-afde-f4ddad824058">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -502,31 +540,31 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{in_rating}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="487" y="0" width="49" height="20" uuid="6ab2dcd5-86a4-434e-a6f1-c8f68aa3ff37">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="RANK" stretchType="ElementGroupHeight" isPrintRepeatedValues="false" mode="Opaque" x="487" y="0" width="49" height="20" uuid="6ab2dcd5-86a4-434e-a6f1-c8f68aa3ff37">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{in_status}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="536" y="0" width="42" height="20" uuid="0fee6c39-6074-4e43-94c1-4695e89ecb99">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="536" y="0" width="42" height="20" uuid="0fee6c39-6074-4e43-94c1-4695e89ecb99">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -534,15 +572,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{res_impact}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="578" y="0" width="52" height="20" uuid="9743ba6d-4d53-409f-8890-1518cdf267f3">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="578" y="0" width="52" height="20" uuid="9743ba6d-4d53-409f-8890-1518cdf267f3">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -550,15 +588,15 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{res_likelihood}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="630" y="0" width="37" height="20" uuid="5f73d391-87ea-4ee3-86aa-7b87e0d65af3">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="630" y="0" width="37" height="20" uuid="5f73d391-87ea-4ee3-86aa-7b87e0d65af3">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -566,31 +604,31 @@ where rg.id = $P{riskRegisterId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{res_rating}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="667" y="0" width="49" height="20" uuid="a79ee9a8-823c-4e9e-b827-9b7ea578f106">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="RES_RANK" stretchType="ElementGroupHeight" x="667" y="0" width="49" height="20" uuid="a79ee9a8-823c-4e9e-b827-9b7ea578f106">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{res_status}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="716" y="0" width="85" height="20" uuid="7cefee7b-bc9d-49e5-a4fd-896995f2b905">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="716" y="0" width="85" height="20" uuid="7cefee7b-bc9d-49e5-a4fd-896995f2b905">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
 				</reportElement>
 				<box>
-					<pen lineWidth="0.25"/>
+					<pen lineWidth="0.5" lineColor="#333333"/>
 				</box>
 				<textElement>
 					<font size="7"/>
@@ -600,9 +638,6 @@ where rg.id = $P{riskRegisterId}]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="21" splitType="Stretch">
 			<textField evaluationTime="Report">
@@ -628,7 +663,4 @@ where rg.id = $P{riskRegisterId}]]>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

@@ -1,43 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.0.final using JasperReports Library version 6.5.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Giamis_Letter" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15f7329b-36ad-4352-89f0-964dac09ba9f">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitaion_Letter" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15f7329b-36ad-4352-89f0-964dac09ba9f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="297"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="696"/>
 	<parameter name="logo" class="java.lang.String"/>
-	<parameter name="userId" class="java.lang.Long"/>
+	<parameter name="engagementMemberId" class="java.lang.Long"/>
 	<queryString>
 		<![CDATA[select 
-e.name as engagment_name,
+e.process || ' ' || COALESCE(e.sub_process,' ') || '  ' || COALESCE(e.sub_sub_process,' ')   as engagment_name,
 fy.name as financial_year,
 DATE_PART('day', e.end_date) - DATE_PART('day', e.start_date) as days,
-e.start_date,
-e.end_date,
+to_char(e.start_date, 'dd Mon yyyy') as start_date,
+to_char(e.end_date,'dd Mon yyyy' ) as end_date,
 (u.first_name || ' ' || u.last_name) as to_user,
-(select u2.first_name || ' ' || u2.last_name 
-	from users as u2
-	join engagement_members em2 on (em2.engagement_id = e.id and u2.id = em2.user_id and em2.role ='TEAMLEAD')
-)  as teamlead,
-(cr.first_name || ' ' || cr.last_name) as from_user,
 ou.name as organisation_unit,
-em.created_date
+em.created_date,
+tl.from_user,
+tl.title,
+case when eo.description is null  then  ''  else 'The overall objective of the engagement is' || eo.description || '.' end  as objective,
+e.scope,
+ad.name as auditee
 from engagement_members as em
 join users as u on u.id = em.user_id
 join engagements as e on e.id = em.engagement_id
 join financial_years as fy on fy.id = e.financial_year_id
-left join users as cr on cr.email = em.created_by
-left join organisation_units as ou on ou.id = cr.organisation_unit_id
-where em.id = $P{userId}]]>
+left join organisation_units as ou on ou.id = e.organisation_unit_id
+left join organisation_units as ad on ad.id = e.auditee
+left join audit_plans as ap on 
+   ap.organisation_unit_id = e.organisation_unit_id and 
+   ap.financial_year_id = e.financial_year_id 
+left join audit_plan_activities as apa on apa.audit_plan_id = ap.id and 
+  apa.organisation_unit_id = e.auditee and apa.auditable_area_id = e.auditable_area_id
+ left join engagement_objectives as eo on eo.id = apa.objective_id
+ left join (
+ 	select 
+ 	em2.engagement_id,
+ 	u2.first_name || ' ' || u2.last_name  as from_user,
+ 	up.title
+	from users as u2
+	join engagement_members em2 on (u2.id = em2.user_id and em2.role ='TEAMLEAD')
+	left join user_profiles as up on up.user_id = u2.id
+)  as tl on tl.engagement_id = e.id
+where em.id = $P{engagementMemberId}]]>
 	</queryString>
-	<field name="engagment_name" class="java.lang.String"/>
-	<field name="financial_year" class="java.lang.String"/>
-	<field name="days" class="java.lang.Double"/>
-	<field name="start_date" class="java.sql.Date"/>
-	<field name="end_date" class="java.sql.Date"/>
-	<field name="to_user" class="java.lang.String"/>
-	<field name="teamlead" class="java.lang.String"/>
-	<field name="from_user" class="java.lang.String"/>
-	<field name="organisation_unit" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="engagment_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="engagment_name"/>
+	</field>
+	<field name="financial_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="financial_years"/>
+	</field>
+	<field name="days" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="days"/>
+	</field>
+	<field name="start_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="start_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="engagements"/>
+	</field>
+	<field name="end_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="end_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="engagements"/>
+	</field>
+	<field name="to_user" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="to_user"/>
+	</field>
+	<field name="organisation_unit" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="organisation_unit"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="organisation_units"/>
+	</field>
+	<field name="created_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="created_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_members"/>
+	</field>
+	<field name="from_user" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="from_user"/>
+	</field>
+	<field name="title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="user_profiles"/>
+	</field>
+	<field name="objective" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="objective"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_objectives"/>
+	</field>
+	<field name="scope" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="scope"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="engagements"/>
+	</field>
+	<field name="auditee" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="auditee"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="organisation_units"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -55,16 +110,16 @@ where em.id = $P{userId}]]>
 				<text><![CDATA[The United Republic of Tanzania]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="489" y="4" width="71" height="18" uuid="eb236d34-61cd-480a-a616-b4c43b1206c5"/>
+				<reportElement x="538" y="4" width="31" height="18" forecolor="#F71F1B" uuid="eb236d34-61cd-480a-a616-b4c43b1206c5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[W/P Ref No. E10-1]]></text>
+				<text><![CDATA[E10-1]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="64" splitType="Stretch">
+		<band height="68" splitType="Stretch">
 			<staticText>
 				<reportElement x="12" y="6" width="28" height="18" uuid="a4cd0916-35bd-41d4-8ce3-ed556c786bd0"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -73,7 +128,7 @@ where em.id = $P{userId}]]>
 				<text><![CDATA[FROM:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="26" width="28" height="18" uuid="e728965d-eb8a-42b0-80a3-09aa39e45879"/>
+				<reportElement x="12" y="26" width="18" height="18" uuid="e728965d-eb8a-42b0-80a3-09aa39e45879"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
@@ -87,11 +142,11 @@ where em.id = $P{userId}]]>
 				<text><![CDATA[DATE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="44" y="7" width="176" height="16" uuid="89461e68-4407-465d-b58d-e87990bf7c49"/>
+				<reportElement x="42" y="7" width="236" height="16" uuid="89461e68-4407-465d-b58d-e87990bf7c49"/>
 				<textFieldExpression><![CDATA[$F{from_user}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="44" y="27" width="176" height="16" uuid="c35e09ab-ee1f-40d5-97fd-18db3312739c"/>
+				<reportElement x="42" y="27" width="236" height="16" uuid="c35e09ab-ee1f-40d5-97fd-18db3312739c"/>
 				<textFieldExpression><![CDATA[$F{to_user}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -102,74 +157,66 @@ where em.id = $P{userId}]]>
 				<textFieldExpression><![CDATA[$F{organisation_unit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="44" y="46" width="176" height="16" uuid="1c651c9b-ef8f-4e08-b32b-8238a09dbfdd"/>
+				<reportElement x="42" y="46" width="236" height="16" uuid="1c651c9b-ef8f-4e08-b32b-8238a09dbfdd"/>
 				<textFieldExpression><![CDATA[$F{created_date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="32" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="11" y="11" width="550" height="19" uuid="37382551-4596-486a-93c5-914419b7c2f6"/>
-				<textFieldExpression><![CDATA["SUBJECT: APPOINTMENT TO FORM A TEAM FOR "+$F{engagment_name}.toUpperCase()]]></textFieldExpression>
+				<reportElement stretchType="ContainerHeight" x="35" y="11" width="494" height="29" uuid="37382551-4596-486a-93c5-914419b7c2f6"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SUBJECT: APPOINTMENT TO FORM A TEAM FOR ENGAGEMENT ON  "+$F{engagment_name}.toUpperCase()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="203" splitType="Stretch">
+		<band height="211" splitType="Stretch">
 			<staticText>
-				<reportElement x="12" y="6" width="140" height="14" uuid="5bac7a63-06fc-4932-9f6d-e3bcb45a7826"/>
+				<reportElement positionType="Float" x="12" y="20" width="140" height="14" uuid="5bac7a63-06fc-4932-9f6d-e3bcb45a7826"/>
 				<text><![CDATA[The heading above refers.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="93" width="550" height="14" uuid="5931f758-5908-4c93-a449-953ca0c3e3c1"/>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="11" y="111" width="550" height="34" uuid="5931f758-5908-4c93-a449-953ca0c3e3c1"/>
+				<textElement textAlignment="Justified"/>
 				<text><![CDATA[Looking forward to quality work, timely completion and submission of audit report. Wishing you all the best in executing the assigned task.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="113" width="140" height="14" uuid="a9a7b30b-6e86-47fc-9ca9-49be694a1901"/>
+				<reportElement positionType="Float" x="12" y="151" width="140" height="14" uuid="a9a7b30b-6e86-47fc-9ca9-49be694a1901"/>
 				<text><![CDATA[Regards]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="154" width="56" height="18" uuid="1ee2124b-b6ae-448f-ac5f-3e695dd3a2f6"/>
+				<reportElement positionType="Float" x="12" y="186" width="32" height="18" uuid="1ee2124b-b6ae-448f-ac5f-3e695dd3a2f6"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TITLE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="134" width="56" height="18" uuid="df907546-22cf-4ddb-963d-284584e51158"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SIGNATURE:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="12" y="174" width="56" height="18" uuid="5e9e653d-4159-4478-a9de-17a8e285edd9"/>
+				<reportElement positionType="Float" x="12" y="168" width="32" height="18" uuid="5e9e653d-4159-4478-a9de-17a8e285edd9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NAME:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="11" y="26" width="550" height="63" uuid="c6b33e1a-b558-4124-b0ce-f9461013c240"/>
-				<textElement>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="11" y="40" width="550" height="63" uuid="c6b33e1a-b558-4124-b0ce-f9461013c240"/>
+				<textElement textAlignment="Justified">
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
-				<textFieldExpression><![CDATA["I have appointed you to form part of an audit team for the engagement on "+$F{engagment_name}+". This is in relation to [our risk based annual internal audit plan FY "+$F{financial_year}+"/request from management]. The overall objective of the engagement is "+$F{days}+" The team leader for this audit engagement is "+$F{teamlead}+". The duration of the engagement is "+$F{days} +" days starting from "+$F{start_date}+" to "+$F{end_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["I have appointed you to form part of an audit team for the engagement at "+$F{auditee}+"  on "+$F{engagment_name}+". This is in relation to our risk based annual internal audit plan FY "+$F{financial_year}+" request from management. "+$F{objective}+"  The team leader for this audit engagement is "+$F{from_user}+". The duration of the engagement is "+$F{days} +" days starting from "+$F{start_date}+" to "+$F{end_date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="71" y="175" width="214" height="16" uuid="dee720a5-bb80-41c6-8aee-296439a986d5"/>
+				<reportElement positionType="Float" x="47" y="169" width="214" height="16" uuid="dee720a5-bb80-41c6-8aee-296439a986d5"/>
 				<textFieldExpression><![CDATA[$F{from_user}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="47" y="187" width="214" height="16" uuid="4ea62c09-7f87-4e4d-9011-a8c1bd020257"/>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
