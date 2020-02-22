@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="B1_engagement_work_program" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5fdf49b4-89c0-42cf-9e9e-cdc7558aa994">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Giamis"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="357"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="636"/>
 	<parameter name="engagementId" class="java.lang.Long"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select 
 ou.name as organisation,
 adt.name as client,
-e.name as title,
-e.start_date || '-' || e.end_date as period,
+e.process || ' ' || COALESCE(e.sub_process,' ') || '  ' || COALESCE(e.sub_sub_process,' ')   as title,
+to_char(e.start_date, 'dd Mon yyyy') || ' - ' || to_char(e.end_date,'dd Mon yyyy' ) as period,e.start_date || '-' || e.end_date as period,
 e.audit_type,
 sp.description as objective,
 ep.name as procedure,
 ep.wprf,
-ep.date_planned,
-ep.date_completed,
+to_char(ep.date_planned, 'dd Mon yyyy') as date_planned,
+to_char(ep.date_completed, 'dd Mon yyyy') as date_completed,
 u.first_name || ' ' || u.last_name as done_by
 from engagement_procedures as ep
-join specific_objectives as sp on sp.id = ep.specific_objective_id
+join risk_control_matrices as rcm on rcm.id = ep.risk_control_matrix_id
+join engagement_objective_risks as eor on eor.id = rcm.engagement_objective_risk_id
+join specific_objectives as sp on sp.id = eor.specific_objective_id
 join engagements as e on e.id = sp.engagement_id
 join organisation_units as ou on ou.id = e.organisation_unit_id
 join organisation_units as adt on adt.id = e.auditee
@@ -41,6 +45,9 @@ where e.id = $P{engagementId}]]>
 	<field name="period" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="period"/>
 	</field>
+	<field name="COLUMN_5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="period"/>
+	</field>
 	<field name="audit_type" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="audit_type"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="engagements"/>
@@ -57,11 +64,11 @@ where e.id = $P{engagementId}]]>
 		<property name="com.jaspersoft.studio.field.label" value="wprf"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_procedures"/>
 	</field>
-	<field name="date_planned" class="java.sql.Date">
+	<field name="date_planned" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="date_planned"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_procedures"/>
 	</field>
-	<field name="date_completed" class="java.sql.Date">
+	<field name="date_completed" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="date_completed"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_procedures"/>
 	</field>
@@ -73,7 +80,7 @@ where e.id = $P{engagementId}]]>
 		<groupHeader>
 			<band height="102">
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="12" width="554" height="20" backcolor="#D1DFED" uuid="040eb9df-4583-46a8-8e12-f6e54083a23b">
+					<reportElement mode="Opaque" x="0" y="12" width="554" height="20" backcolor="#DEDCDC" uuid="040eb9df-4583-46a8-8e12-f6e54083a23b">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -113,7 +120,7 @@ where e.id = $P{engagementId}]]>
 					<textFieldExpression><![CDATA[$F{objective}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="61" width="280" height="41" backcolor="#D1DFED" uuid="f867898c-438f-4f0c-8f93-d4e45ed3a282">
+					<reportElement mode="Opaque" x="0" y="61" width="280" height="41" backcolor="#DEDCDC" uuid="f867898c-438f-4f0c-8f93-d4e45ed3a282">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -134,7 +141,7 @@ where e.id = $P{engagementId}]]>
 					<text><![CDATA[Engagement Work Program]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="280" y="61" width="100" height="41" backcolor="#D1DFED" uuid="0734574f-c6f5-4f24-92c1-aed8976c5dd1">
+					<reportElement mode="Opaque" x="280" y="61" width="100" height="41" backcolor="#DEDCDC" uuid="0734574f-c6f5-4f24-92c1-aed8976c5dd1">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -154,7 +161,7 @@ where e.id = $P{engagementId}]]>
 					<text><![CDATA[Done By]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="380" y="61" width="100" height="22" backcolor="#D1DFED" uuid="ee7bf34c-b85f-429f-ae13-dfcdb4aaa9c3">
+					<reportElement mode="Opaque" x="380" y="61" width="100" height="22" backcolor="#DEDCDC" uuid="ee7bf34c-b85f-429f-ae13-dfcdb4aaa9c3">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -175,7 +182,7 @@ where e.id = $P{engagementId}]]>
 					<text><![CDATA[Date Planned]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="380" y="82" width="100" height="20" backcolor="#D1DFED" uuid="2dbedb18-a8d4-4f3f-accd-5667f07cc503">
+					<reportElement mode="Opaque" x="380" y="82" width="100" height="20" backcolor="#DEDCDC" uuid="2dbedb18-a8d4-4f3f-accd-5667f07cc503">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -195,7 +202,7 @@ where e.id = $P{engagementId}]]>
 					<text><![CDATA[Date Completed]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="480" y="61" width="39" height="41" backcolor="#D1DFED" uuid="673eb2ca-0414-40dc-9f28-1a8299140be0">
+					<reportElement mode="Opaque" x="480" y="61" width="39" height="41" backcolor="#DEDCDC" uuid="673eb2ca-0414-40dc-9f28-1a8299140be0">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -215,7 +222,7 @@ where e.id = $P{engagementId}]]>
 					<text><![CDATA[Wp/rf]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="519" y="61" width="36" height="41" backcolor="#D1DFED" uuid="400cecc6-6f97-4644-95eb-9d9cde4d228f">
+					<reportElement mode="Opaque" x="519" y="61" width="36" height="41" backcolor="#DEDCDC" uuid="400cecc6-6f97-4644-95eb-9d9cde4d228f">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 						<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -331,7 +338,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[Client:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="69" y="98" width="337" height="20" uuid="b92cf4a2-9dcd-4c1f-bbf1-79ac3b771aed">
+				<reportElement x="49" y="98" width="502" height="20" uuid="b92cf4a2-9dcd-4c1f-bbf1-79ac3b771aed">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -351,7 +358,7 @@ where e.id = $P{engagementId}]]>
 				<textFieldExpression><![CDATA[$F{client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="69" y="118" width="337" height="20" uuid="812c310e-28d4-4e49-bc00-2dff861974f5">
+				<reportElement x="49" y="118" width="503" height="20" uuid="812c310e-28d4-4e49-bc00-2dff861974f5">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -371,7 +378,7 @@ where e.id = $P{engagementId}]]>
 				<textFieldExpression><![CDATA["Engagement Work Program ("+$F{title} +")"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="69" y="138" width="337" height="22" uuid="96013106-44ca-4898-88ea-f2ddb20c8136">
+				<reportElement x="49" y="138" width="502" height="22" uuid="96013106-44ca-4898-88ea-f2ddb20c8136">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -468,7 +475,7 @@ where e.id = $P{engagementId}]]>
 					<bottomPen lineWidth="0.25" lineColor="#333333"/>
 					<rightPen lineWidth="0.25" lineColor="#333333"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
@@ -489,11 +496,11 @@ where e.id = $P{engagementId}]]>
 					<bottomPen lineWidth="0.25" lineColor="#333333"/>
 					<rightPen lineWidth="0.25" lineColor="#333333"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Planned:" +$F{date_planned}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{date_planned}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="ContainerHeight" x="380" y="19" width="100" height="19" uuid="b97a6119-76f9-44e2-a25f-a2241fcc90ac">
@@ -510,11 +517,11 @@ where e.id = $P{engagementId}]]>
 					<bottomPen lineWidth="0.25" lineColor="#333333"/>
 					<rightPen lineWidth="0.25" lineColor="#333333"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Completed:" +$F{date_completed}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{date_completed}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="ContainerHeight" x="480" y="0" width="39" height="38" forecolor="#FF3936" uuid="c793b987-f9c3-474d-9d12-10599b2b5991">

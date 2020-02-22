@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C5_risk_control_matrix" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee4f9252-264b-4a19-88d5-360e7a2b97c9">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C5_risk_control_matrix" pageWidth="1191" pageHeight="842" orientation="Landscape" columnWidth="1151" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee4f9252-264b-4a19-88d5-360e7a2b97c9">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<style name="Crosstab 1_CH" mode="Opaque" backcolor="#F0F8FF">
+	<style name="Crosstab 1_CH" mode="Opaque" backcolor="#FFFFFF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -39,17 +39,40 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
+	<style name="KEY_CONTROL">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[!$V{risk}.equals("Walk-Through") && $V{is_key_control}]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FCC256"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{risk}.equals( "Walk-Through")]]></conditionExpression>
+			<style mode="Opaque" backcolor="#CFFCB8"/>
+		</conditionalStyle>
+	</style>
+	<style name="WALK-THROUGH">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{risk}.equals( "Walk-Through")]]></conditionExpression>
+			<style mode="Opaque" backcolor="#CFFCB8" hTextAlign="Center">
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
 	<subDataset name="Internal Controls" uuid="48947585-d7db-4fc9-9d0e-157a4dd490a2">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="302"/>
+		<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="690"/>
 		<parameter name="engagementId" class="java.lang.Long"/>
 		<queryString language="SQL">
 			<![CDATA[select 
+1 as sort,
  name as control,
  step_number,
  area_of_responsibility,
  criteria,
- 'WalkThrough' as risk,
+ 'Walk-Through' as risk,
  null as risk_code,
  null as mapped,
  null as res_impact,
@@ -57,11 +80,15 @@
  null as res_status,
  null as is_key_control,
  is_control,
+ score,
  document_name
 from internal_controls
-where engagement_id = 31751
-union all
+where engagement_id = $P{engagementId}
+
+union all 
+
 select 
+3 as sort,
  ic.name as control,
  ic.step_number,
  ic.area_of_responsibility,
@@ -79,13 +106,17 @@ select
  end as res_status,
  rcm.is_key_control,
  null as is_control,
+ null as score,
  null as document_name
 from risk_control_matrices as rcm
 join internal_controls as ic on ic.id =rcm.internal_control_id
 join engagement_objective_risks as eor on eor.id = rcm.engagement_objective_risk_id
 join specific_objectives as sp on sp.id = eor.specific_objective_id
-where sp.engagement_id = 31751]]>
+where sp.engagement_id = $P{engagementId}]]>
 		</queryString>
+		<field name="sort" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="sort"/>
+		</field>
 		<field name="control" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="control"/>
 			<property name="com.jaspersoft.studio.field.tree.path" value="internal_controls"/>
@@ -132,6 +163,9 @@ where sp.engagement_id = 31751]]>
 		<field name="is_control" class="java.lang.Boolean">
 			<property name="com.jaspersoft.studio.field.label" value="is_control"/>
 		</field>
+		<field name="score" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="score"/>
+		</field>
 		<field name="document_name" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="document_name"/>
 		</field>
@@ -142,24 +176,11 @@ where sp.engagement_id = 31751]]>
 		<![CDATA[select 
 ou.name as organisation,
 adt.name as client,
-etm.created_by as prepared_by,
-etm.created_date as prepared_on,
-etm.reviewed_by as reviewed_by,
-etm.reviewed_date as reviewed_on,
-etm.meeting_date,
-etm.any_other_issue,
-etm.venue,
-e.description as title,
-ap.objective as general_objective,
-e.start_date || '-' || e.end_date as period,
-e.audit_type
-from engagement_team_meetings as etm
-join engagements as e on e.id = etm.engagement_id
+e.process || ' ' || COALESCE(e.sub_process,' ') || '  ' || COALESCE(e.sub_sub_process,' ')   as title,
+to_char(e.start_date, 'dd Mon yyyy') || ' - ' || to_char(e.end_date,'dd Mon yyyy' ) as period
+from engagements as e 
 join organisation_units as ou on ou.id = e.organisation_unit_id
 join organisation_units as adt on adt.id = e.auditee
-left join audit_plans as ap 
-   on ap.organisation_unit_id= e.organisation_unit_id and
-   ap.financial_year_id = e.financial_year_id
 where e.id = $P{engagementId}]]>
 	</queryString>
 	<field name="organisation" class="java.lang.String">
@@ -170,48 +191,12 @@ where e.id = $P{engagementId}]]>
 		<property name="com.jaspersoft.studio.field.label" value="client"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="organisation_units"/>
 	</field>
-	<field name="prepared_by" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="prepared_by"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
-	<field name="prepared_on" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.label" value="prepared_on"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
-	<field name="reviewed_by" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="reviewed_by"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
-	<field name="reviewed_on" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.label" value="reviewed_on"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
-	<field name="meeting_date" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.label" value="meeting_date"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
-	<field name="any_other_issue" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="any_other_issue"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
-	<field name="venue" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="venue"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagement_team_meetings"/>
-	</field>
 	<field name="title" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="title"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="engagements"/>
 	</field>
-	<field name="general_objective" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="general_objective"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="audit_plans"/>
-	</field>
 	<field name="period" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="period"/>
-	</field>
-	<field name="audit_type" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="audit_type"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="engagements"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -223,21 +208,21 @@ where e.id = $P{engagementId}]]>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="3" width="800" height="26" uuid="dd872e50-620a-4791-bc95-ec5d4d6b094b"/>
+				<reportElement x="0" y="3" width="1150" height="26" uuid="dd872e50-620a-4791-bc95-ec5d4d6b094b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[United Republic of Tanzania]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="31" width="800" height="26" uuid="f460c7b8-4805-4b27-ab4c-07c9e73f77b0"/>
+				<reportElement x="0" y="31" width="1150" height="26" uuid="f460c7b8-4805-4b27-ab4c-07c9e73f77b0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{organisation}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="760" y="2" width="40" height="26" forecolor="#FC0C08" backcolor="#FFFFFF" uuid="73e8e5f5-98f8-4224-9d8a-473aeae9cd40">
+				<reportElement mode="Opaque" x="1110" y="3" width="40" height="26" forecolor="#FC0C08" backcolor="#FFFFFF" uuid="73e8e5f5-98f8-4224-9d8a-473aeae9cd40">
 					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -268,7 +253,7 @@ where e.id = $P{engagementId}]]>
 		</band>
 	</title>
 	<detail>
-		<band height="160" splitType="Stretch">
+		<band height="280" splitType="Stretch">
 			<staticText>
 				<reportElement mode="Opaque" x="3" y="5" width="42" height="20" uuid="77f7ce1b-e651-400e-a829-e35512821a1d">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -290,7 +275,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[Client:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="67" y="5" width="337" height="20" uuid="9bf1b3e5-ad57-469a-bdd9-630df359e06f">
+				<reportElement x="67" y="5" width="1082" height="20" uuid="9bf1b3e5-ad57-469a-bdd9-630df359e06f">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -330,7 +315,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[Title:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="67" y="25" width="337" height="20" uuid="9863983b-1f69-4c29-ab83-dd60882fbc79">
+				<reportElement x="67" y="25" width="1083" height="20" uuid="9863983b-1f69-4c29-ab83-dd60882fbc79">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -347,10 +332,10 @@ where e.id = $P{engagementId}]]>
 					<font size="9"/>
 					<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{title}+ " Engagement Objectives"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="67" y="45" width="337" height="22" uuid="753e6142-440b-4b31-95d4-db6a4db6f2d4">
+				<reportElement x="67" y="45" width="1082" height="22" uuid="753e6142-440b-4b31-95d4-db6a4db6f2d4">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -390,7 +375,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[Period:]]></text>
 			</staticText>
 			<crosstab>
-				<reportElement x="10" y="100" width="790" height="60" uuid="f45181df-3bdb-483f-9684-0b94b0a21ae1">
+				<reportElement x="3" y="100" width="1137" height="169" uuid="f45181df-3bdb-483f-9684-0b94b0a21ae1">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab 1_CH"/>
 					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab 1_CG"/>
@@ -399,11 +384,109 @@ where e.id = $P{engagementId}]]>
 				</reportElement>
 				<crosstabDataset>
 					<dataset>
-						<datasetRun subDataset="Internal Controls" uuid="342bed0e-7755-4f7e-ab60-37fcff96d6aa">
+						<datasetRun subDataset="Internal Controls" uuid="0b4f4a5e-2057-48d1-9c82-0601e082b341">
+							<datasetParameter name="engagementId">
+								<datasetParameterExpression><![CDATA[$P{engagementId}]]></datasetParameterExpression>
+							</datasetParameter>
 							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 						</datasetRun>
 					</dataset>
 				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents>
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+						<staticText>
+							<reportElement mode="Opaque" x="100" y="0" width="100" height="20" backcolor="#FCFCC5" uuid="26265bff-efc5-47e9-8b48-34d88a28e3f5">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.5" lineColor="#333333"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+								<paragraph leftIndent="8" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+							</textElement>
+							<text><![CDATA[Narrative Step No.]]></text>
+						</staticText>
+						<staticText>
+							<reportElement mode="Opaque" x="100" y="20" width="100" height="39" backcolor="#FCFCC5" uuid="09b66250-74fa-47bb-be83-c1fc5a26608e">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.5" lineColor="#333333"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+								<paragraph leftIndent="8" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+							</textElement>
+							<text><![CDATA[Control Description]]></text>
+						</staticText>
+						<staticText>
+							<reportElement mode="Opaque" x="100" y="59" width="100" height="38" backcolor="#FCFCC5" uuid="b9dbba75-bed4-480e-83d5-e8cfbec88fd3">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.5" lineColor="#333333"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+								<paragraph leftIndent="8" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+							</textElement>
+							<text><![CDATA[Areaof Responsibility]]></text>
+						</staticText>
+						<staticText>
+							<reportElement mode="Opaque" x="100" y="97" width="100" height="21" backcolor="#FCFCC5" uuid="a8a52377-e2ee-45ee-884f-4a3e97e6fc0e">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.5" lineColor="#333333"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+								<paragraph leftIndent="8" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+							</textElement>
+							<text><![CDATA[Related Criteria]]></text>
+						</staticText>
+						<staticText>
+							<reportElement mode="Opaque" x="100" y="118" width="100" height="31" backcolor="#FCFCC5" uuid="6b3b8469-81b8-4bd3-b978-d056965746ea">
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.5" lineColor="#333333"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+								<paragraph leftIndent="8" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+							</textElement>
+							<text><![CDATA[Control Evidence]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
 				<rowGroup name="risk" width="200" totalPosition="End">
 					<bucket class="java.lang.String">
 						<bucketExpression><![CDATA[$F{risk}]]></bucketExpression>
@@ -411,7 +494,16 @@ where e.id = $P{engagementId}]]>
 					<crosstabRowHeader>
 						<cellContents mode="Opaque" style="Crosstab 1_CH">
 							<textField>
-								<reportElement x="0" y="0" width="200" height="20" uuid="231e5f84-47d3-40d9-8558-487376e23197"/>
+								<reportElement style="WALK-THROUGH" isPrintRepeatedValues="false" x="0" y="0" width="200" height="20" uuid="231e5f84-47d3-40d9-8558-487376e23197">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								</reportElement>
+								<textElement verticalAlignment="Middle" markup="none">
+									<font size="8"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$V{risk}]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -422,15 +514,93 @@ where e.id = $P{engagementId}]]>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="step_number" height="20" totalPosition="End">
+				<columnGroup name="step_number" height="149" totalPosition="End">
 					<bucket class="java.lang.Integer">
 						<bucketExpression><![CDATA[$F{step_number}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
 						<cellContents mode="Opaque" style="Crosstab 1_CH">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 							<textField>
-								<reportElement x="0" y="0" width="110" height="20" uuid="114bb71a-5878-4bbd-8a82-3e2a88e24365"/>
+								<reportElement mode="Opaque" x="0" y="0" width="100" height="20" backcolor="#FFFFFF" uuid="114bb71a-5878-4bbd-8a82-3e2a88e24365">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5" lineColor="#333333"/>
+								</box>
+								<textElement textAlignment="Center" markup="none">
+									<font size="9" isBold="true"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$V{step_number}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement mode="Opaque" x="0" y="20" width="100" height="39" backcolor="#FFFFFF" uuid="1d9a028e-022e-4936-9a5f-9702d9c48cb7">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5" lineColor="#333333"/>
+								</box>
+								<textElement textAlignment="Justified" markup="none">
+									<font size="8"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{control}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement mode="Opaque" x="0" y="59" width="100" height="38" backcolor="#FFFFFF" uuid="d3053ef9-2a86-416b-ad8c-c37f9c4a7691">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5" lineColor="#333333"/>
+								</box>
+								<textElement textAlignment="Justified" markup="none">
+									<font size="8"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{area_of_responsibility}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement mode="Opaque" x="0" y="97" width="100" height="21" backcolor="#FFFFFF" uuid="28248c56-fe6a-4bdd-8d1e-76a41a36112d">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5" lineColor="#333333"/>
+								</box>
+								<textElement textAlignment="Center" markup="none">
+									<font size="8"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{criteria}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement mode="Opaque" x="0" y="118" width="100" height="31" backcolor="#FFFFFF" uuid="740c5387-578d-41a9-bcc9-d198b702bb43">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<pen lineWidth="0.5" lineColor="#333333"/>
+								</box>
+								<textElement textAlignment="Justified" markup="none">
+									<font size="8"/>
+									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{document_name}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabColumnHeader>
@@ -443,18 +613,39 @@ where e.id = $P{engagementId}]]>
 				<measure name="mapped_MEASURE" class="java.lang.Integer" calculation="Count">
 					<measureExpression><![CDATA[$F{mapped}]]></measureExpression>
 				</measure>
-				<crosstabCell width="110" height="20">
+				<measure name="control" class="java.lang.String">
+					<measureExpression><![CDATA[$F{control}]]></measureExpression>
+				</measure>
+				<measure name="area_of_responsibility" class="java.lang.String">
+					<measureExpression><![CDATA[$F{area_of_responsibility}]]></measureExpression>
+				</measure>
+				<measure name="criteria" class="java.lang.String">
+					<measureExpression><![CDATA[$F{criteria}]]></measureExpression>
+				</measure>
+				<measure name="document_name" class="java.lang.String">
+					<measureExpression><![CDATA[$F{document_name}]]></measureExpression>
+				</measure>
+				<measure name="score" class="java.lang.String">
+					<measureExpression><![CDATA[$F{score}]]></measureExpression>
+				</measure>
+				<measure name="is_key_control" class="java.lang.Boolean">
+					<measureExpression><![CDATA[$F{is_key_control}]]></measureExpression>
+				</measure>
+				<crosstabCell width="100" height="20">
 					<cellContents mode="Opaque" style="Crosstab 1_CD">
 						<textField>
-							<reportElement x="0" y="0" width="110" height="20" uuid="b9fc2668-3fa4-4ab6-a60a-e329fc9ecced"/>
-							<textFieldExpression><![CDATA[$V{mapped_MEASURE}]]></textFieldExpression>
+							<reportElement style="KEY_CONTROL" x="0" y="0" width="100" height="20" uuid="b9fc2668-3fa4-4ab6-a60a-e329fc9ecced"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{risk}.equals("Walk-Through") ? (($V{score}.equals( "SAME_AS_NARRATED" ))?"YES":"NO"):  ($V{mapped_MEASURE}.equals(1)) ? "O" : ""]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="0" height="20" columnTotalGroup="step_number">
 					<cellContents mode="Opaque" style="Crosstab 1_CT"/>
 				</crosstabCell>
-				<crosstabCell width="110" height="0" rowTotalGroup="risk">
+				<crosstabCell width="100" height="0" rowTotalGroup="risk">
 					<cellContents mode="Opaque" style="Crosstab 1_CT"/>
 				</crosstabCell>
 				<crosstabCell width="0" height="0" rowTotalGroup="risk" columnTotalGroup="step_number">
