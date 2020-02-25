@@ -92,6 +92,11 @@
 			<location>C:/Users/Matoke/Desktop/giamis-reports/Template A4.jrxml</location>
 		</link>
 		<link>
+			<name>aggreggate.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/aggreggate.jrxml</location>
+		</link>
+		<link>
 			<name>audit_plan_activity.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/audit_plan_activity.jrxml</location>
@@ -122,6 +127,11 @@
 			<location>C:/Users/Matoke/Desktop/giamis-reports/followup.jrxml</location>
 		</link>
 		<link>
+			<name>folowup.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/folowup.jrxml</location>
+		</link>
+		<link>
 			<name>invitation_letter.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/invitation_letter.jrxml</location>
@@ -130,6 +140,11 @@
 			<name>pre_audit_report.jrxml</name>
 			<type>1</type>
 			<location>C:/Users/Matoke/Desktop/giamis-reports/pre_audit_report.jrxml</location>
+		</link>
+		<link>
+			<name>quarter_report.jrxml</name>
+			<type>1</type>
+			<location>C:/Users/Matoke/Desktop/giamis-reports/quarter_report.jrxml</location>
 		</link>
 		<link>
 			<name>rbap.jrxml</name>
