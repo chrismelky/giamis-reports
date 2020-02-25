@@ -229,7 +229,7 @@ group by ou.id, qr.id, fy.id, r.id]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="117" splitType="Stretch">
+		<band height="129" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="31" width="553" height="26" uuid="b99a15d6-9c3b-4856-949f-55da20c957df"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">

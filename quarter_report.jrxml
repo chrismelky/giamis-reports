@@ -49,8 +49,7 @@ left join engagements as e on e.organisation_unit_id = ap.organisation_unit_id
 and e.auditable_area_id = a.auditable_area_id 
 and e.start_date <= (select start_date from quarters where id =$P{quarterId})
 where ap.organisation_unit_id =$P{organisationUnitId}
-group by ad.id
-]]>
+group by ad.id]]>
 		</queryString>
 		<field name="name" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="name"/>
@@ -294,7 +293,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 		</band>
 	</title>
 	<detail>
-		<band height="802" splitType="Stretch">
+		<band height="648" splitType="Stretch">
 			<staticText>
 				<reportElement positionType="Float" mode="Opaque" x="0" y="7" width="555" height="17" uuid="97131aca-c0c6-49fc-b38b-d4225e89ee4c">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -728,7 +727,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<text><![CDATA[AUDIT SERVICES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="471" width="555" height="17" uuid="7a18ab0e-4041-42e0-8e1c-97d3ce108067">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="432" width="555" height="17" uuid="7a18ab0e-4041-42e0-8e1c-97d3ce108067">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -751,7 +750,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<text><![CDATA[CONSUTING SERVICE]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="510" width="555" height="20" uuid="72a81cd3-463b-4cfd-8ba7-62cd0f4f9a41">
+				<reportElement positionType="Float" x="0" y="471" width="555" height="20" uuid="72a81cd3-463b-4cfd-8ba7-62cd0f4f9a41">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -771,7 +770,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<textFieldExpression><![CDATA[$F{risk_training}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="627" width="555" height="17" uuid="c5202b2f-31fa-4884-a94e-a90eb6fbc2a1">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="588" width="555" height="17" uuid="c5202b2f-31fa-4884-a94e-a90eb6fbc2a1">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -794,7 +793,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<text><![CDATA[CONCLUSION]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="644" width="555" height="20" uuid="3e92222e-e8bb-4dfa-b71e-c26bcb637f5d">
+				<reportElement positionType="Float" x="0" y="605" width="555" height="20" uuid="3e92222e-e8bb-4dfa-b71e-c26bcb637f5d">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -814,7 +813,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<textFieldExpression><![CDATA[$F{conclusion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="490" width="555" height="17" uuid="bea8cb37-d5ad-4663-af5b-c43e7e4b8126">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="451" width="555" height="17" uuid="bea8cb37-d5ad-4663-af5b-c43e7e4b8126">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -837,7 +836,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<text><![CDATA[Risk Management and Development Risk Register Training]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="536" width="555" height="17" uuid="84fef8b8-9087-4647-95c8-6c813eef58a7">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="497" width="555" height="17" uuid="84fef8b8-9087-4647-95c8-6c813eef58a7">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -860,7 +859,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<text><![CDATA[Facilitate training in preparation of final accounts to finance staffs]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="556" width="555" height="20" uuid="b9e1c8fa-b3ac-4dd4-8345-e210a84125a7">
+				<reportElement positionType="Float" x="0" y="517" width="555" height="20" uuid="b9e1c8fa-b3ac-4dd4-8345-e210a84125a7">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -880,7 +879,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<textFieldExpression><![CDATA[$F{facility_training}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="582" width="555" height="17" uuid="2bc0f5b0-7bf7-430d-bc5e-af4eb4c76111">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="543" width="555" height="17" uuid="2bc0f5b0-7bf7-430d-bc5e-af4eb4c76111">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -903,7 +902,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<text><![CDATA[Others]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="602" width="555" height="20" uuid="3f36046f-90d7-417e-a181-b9c45d82ad22">
+				<reportElement positionType="Float" x="0" y="563" width="555" height="20" uuid="3f36046f-90d7-417e-a181-b9c45d82ad22">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -923,7 +922,7 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 				<textFieldExpression><![CDATA[$F{other_training}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="670" width="555" height="17" uuid="e1d7d136-5ed6-46af-9688-bce4adecf677">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="631" width="555" height="17" uuid="e1d7d136-5ed6-46af-9688-bce4adecf677">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>

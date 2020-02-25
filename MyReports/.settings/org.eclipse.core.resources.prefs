@@ -22,6 +22,7 @@ encoding/finding_summary.jrxml=UTF-8
 encoding/followup.jrxml=UTF-8
 encoding/invitation_letter.jrxml=UTF-8
 encoding/pre_audit_report.jrxml=UTF-8
+encoding/quarter_report.jrxml=UTF-8
 encoding/rbap.jrxml=UTF-8
 encoding/risk_assesment_report.jrxml=UTF-8
 encoding/risk_register.jrxml=UTF-8
