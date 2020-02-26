@@ -951,8 +951,8 @@ where qr.id = $P{quarterId} and ou.id =$P{organisationUnitId}]]>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="planvsactual" uuid="8352c904-64cd-40d3-b3af-6503befcf6c9">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="planvsactual" uuid="7a82895c-ea1b-4a60-ae3b-ab0ed0a48ac9">
 						<datasetParameter name="organisationUnitId">
 							<datasetParameterExpression><![CDATA[$P{organisationUnitId}]]></datasetParameterExpression>
 						</datasetParameter>

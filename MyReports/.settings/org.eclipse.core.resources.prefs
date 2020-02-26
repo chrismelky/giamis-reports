@@ -16,6 +16,7 @@ encoding/FA_1_five_attribute.jrxml=UTF-8
 encoding/aggreggate.jrxml=UTF-8
 encoding/audit_plan_activity.jrxml=UTF-8
 encoding/audit_report.jrxml=UTF-8
+encoding/audit_report_finding.jrxml=UTF-8
 encoding/complience_plan.jrxml=UTF-8
 encoding/finding_sum1.jrxml=UTF-8
 encoding/finding_summary.jrxml=UTF-8

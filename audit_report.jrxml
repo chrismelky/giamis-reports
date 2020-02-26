@@ -5,42 +5,6 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="255"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="734"/>
-	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Crosstab_CG" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Crosstab_CT" mode="Opaque" backcolor="#005FB3">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
 	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -180,6 +144,52 @@ where e.id = $P{engagementId}]]>
 		<field name="recommendation" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="recommendation"/>
 			<property name="com.jaspersoft.studio.field.tree.path" value="eng_finding_recommendations"/>
+		</field>
+	</subDataset>
+	<subDataset name="finding list" uuid="6ef4effb-bef4-45a4-b3a6-d84795a99413">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+		<parameter name="engagementId" class="java.lang.Long"/>
+		<queryString language="SQL">
+			<![CDATA[select
+ ef.description as finding,
+ ef.condition,
+ ef.category,
+ ef.sub_category,
+ef.cause,
+ action_plan_categorisation 
+from engagement_findings as ef
+join engagement_procedures as ep on ep.id = ef.engagement_procedure_id
+join risk_control_matrices as rcm on rcm.id= ep.risk_control_matrix_id
+join engagement_objective_risks as eor on eor.id = rcm.engagement_objective_risk_id
+join specific_objectives as so on so.id = eor.specific_objective_id
+join engagements as e on e.id = so.engagement_id
+where e.id = $P{engagementId}
+]]>
+		</queryString>
+		<field name="finding" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="finding"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
+		</field>
+		<field name="condition" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="condition"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
+		</field>
+		<field name="category" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="category"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
+		</field>
+		<field name="sub_category" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="sub_category"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
+		</field>
+		<field name="cause" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="cause"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
+		</field>
+		<field name="action_plan_categorisation" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="action_plan_categorisation"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="engagement_findings"/>
 		</field>
 	</subDataset>
 	<parameter name="engagementId" class="java.lang.Long"/>
@@ -478,7 +488,7 @@ where e.id = $P{engagementId}]]>
 		</band>
 	</title>
 	<detail>
-		<band height="619" splitType="Stretch">
+		<band height="606" splitType="Stretch">
 			<staticText>
 				<reportElement positionType="Float" mode="Opaque" x="0" y="2" width="555" height="17" uuid="ca3400e4-d40a-4c7e-91eb-7967c5301787">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -662,7 +672,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[8. CURRENT FINDINGS AND RECOMMENDATIONS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="366" width="555" height="17" uuid="d03de64a-432a-42d4-9f5a-8be675ebe2fd">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="353" width="555" height="17" uuid="d03de64a-432a-42d4-9f5a-8be675ebe2fd">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -685,7 +695,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[9. COMPLIENCE PLAN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="406" width="555" height="17" uuid="536ae99b-91c5-4396-abf7-713f82a03a46">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="393" width="555" height="17" uuid="536ae99b-91c5-4396-abf7-713f82a03a46">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -708,7 +718,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[10. CONCLUSION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="447" width="555" height="17" uuid="48cd51e7-e7fa-4ffb-acfb-eb80d5ce90c7">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="434" width="555" height="17" uuid="48cd51e7-e7fa-4ffb-acfb-eb80d5ce90c7">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -851,7 +861,7 @@ where e.id = $P{engagementId}]]>
 				<textFieldExpression><![CDATA[$F{complience_statement}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="423" width="555" height="20" uuid="ce567f30-0c3e-4fc9-b96b-8fbee41ee476">
+				<reportElement positionType="Float" x="0" y="410" width="555" height="20" uuid="ce567f30-0c3e-4fc9-b96b-8fbee41ee476">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -871,7 +881,7 @@ where e.id = $P{engagementId}]]>
 				<textFieldExpression><![CDATA[$F{conclusion}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="464" width="555" height="20" uuid="ae876e5c-7b11-4e69-b754-15f571c2d1b4">
+				<reportElement positionType="Float" x="0" y="451" width="555" height="20" uuid="ae876e5c-7b11-4e69-b754-15f571c2d1b4">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -923,12 +933,12 @@ where e.id = $P{engagementId}]]>
 						<bucketExpression><![CDATA[$F{arow}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
+						<cellContents mode="Opaque">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</cellContents>
 					</crosstabRowHeader>
 					<crosstabTotalRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CT"/>
+						<cellContents mode="Opaque"/>
 					</crosstabTotalRowHeader>
 				</rowGroup>
 				<columnGroup name="status" height="17" totalPosition="End">
@@ -936,7 +946,7 @@ where e.id = $P{engagementId}]]>
 						<bucketExpression><![CDATA[$F{status}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
+						<cellContents mode="Opaque">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<textField>
 								<reportElement x="0" y="0" width="111" height="17" uuid="8232fe7f-f4a5-4e35-83d1-6746390dfe18">
@@ -954,7 +964,7 @@ where e.id = $P{engagementId}]]>
 						</cellContents>
 					</crosstabColumnHeader>
 					<crosstabTotalColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CT">
+						<cellContents mode="Opaque">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						</cellContents>
 					</crosstabTotalColumnHeader>
@@ -963,7 +973,7 @@ where e.id = $P{engagementId}]]>
 					<measureExpression><![CDATA[$F{status}]]></measureExpression>
 				</measure>
 				<crosstabCell width="111" height="20">
-					<cellContents mode="Opaque" style="Crosstab_CD">
+					<cellContents mode="Opaque">
 						<textField>
 							<reportElement x="0" y="0" width="111" height="20" uuid="aa34f7e8-0af0-4523-ada4-21f487425792">
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -980,111 +990,19 @@ where e.id = $P{engagementId}]]>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="0" height="20" columnTotalGroup="status">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
+					<cellContents mode="Opaque"/>
 				</crosstabCell>
 				<crosstabCell width="111" height="0" rowTotalGroup="arow">
-					<cellContents mode="Opaque" style="Crosstab_CT">
+					<cellContents mode="Opaque">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="0" height="0" rowTotalGroup="arow" columnTotalGroup="status">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-			</crosstab>
-			<crosstab columnBreakOffset="20" ignoreWidth="true">
-				<reportElement positionType="Float" x="0" y="320" width="554" height="40" uuid="bdf3bd4d-116c-4a68-a688-9530c5e374fa">
-					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
-					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
-					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
-					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
-				</reportElement>
-				<crosstabDataset>
-					<dataset>
-						<datasetRun subDataset="finding" uuid="a18bd8f4-261e-449a-840f-cd0a431407a0">
-							<datasetParameter name="engagementId">
-								<datasetParameterExpression><![CDATA[$P{engagementId}]]></datasetParameterExpression>
-							</datasetParameter>
-							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-						</datasetRun>
-					</dataset>
-				</crosstabDataset>
-				<rowGroup name="arow" width="0" totalPosition="End">
-					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{arow}]]></bucketExpression>
-					</bucket>
-					<crosstabRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</cellContents>
-					</crosstabRowHeader>
-					<crosstabTotalRowHeader>
-						<cellContents mode="Opaque" style="Crosstab_CT"/>
-					</crosstabTotalRowHeader>
-				</rowGroup>
-				<columnGroup name="status" height="20" totalPosition="End">
-					<bucket class="java.lang.String">
-						<bucketExpression><![CDATA[$F{status}]]></bucketExpression>
-					</bucket>
-					<crosstabColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CH">
-							<property name="com.jaspersoft.studio.unit.height" value=""/>
-							<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-							<textField>
-								<reportElement x="0" y="0" width="111" height="20" uuid="8799fa39-a63a-4ec9-8d70-6c0734369db7">
-									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-									<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-								</reportElement>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="7"/>
-									<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$V{status}]]></textFieldExpression>
-							</textField>
-						</cellContents>
-					</crosstabColumnHeader>
-					<crosstabTotalColumnHeader>
-						<cellContents mode="Opaque" style="Crosstab_CT">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</cellContents>
-					</crosstabTotalColumnHeader>
-				</columnGroup>
-				<measure name="status_MEASURE" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[$F{status}]]></measureExpression>
-				</measure>
-				<crosstabCell width="111" height="20">
-					<cellContents mode="Opaque" style="Crosstab_CD">
-						<textField>
-							<reportElement x="0" y="0" width="111" height="20" uuid="017ccc04-6fbd-49f1-a4df-6faa1363cbec">
-								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
-								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
-							</reportElement>
-							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="7"/>
-								<paragraph leftIndent="4" rightIndent="4" spacingBefore="4" spacingAfter="4"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$V{status_MEASURE}]]></textFieldExpression>
-						</textField>
-					</cellContents>
-				</crosstabCell>
-				<crosstabCell width="0" height="20" columnTotalGroup="status">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
-				</crosstabCell>
-				<crosstabCell width="111" height="0" rowTotalGroup="arow">
-					<cellContents mode="Opaque" style="Crosstab_CT">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</cellContents>
-				</crosstabCell>
-				<crosstabCell width="0" height="0" rowTotalGroup="arow" columnTotalGroup="status">
-					<cellContents mode="Opaque" style="Crosstab_CT"/>
+					<cellContents mode="Opaque"/>
 				</crosstabCell>
 			</crosstab>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="489" width="555" height="17" uuid="b49e5e73-a6a7-4503-8356-4ec1d8b6f0b6">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="476" width="555" height="17" uuid="b49e5e73-a6a7-4503-8356-4ec1d8b6f0b6">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -1107,7 +1025,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[12. APPENDICES]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement positionType="Float" x="0" y="525" width="555" height="37" uuid="e60e7a86-9af0-4b06-820a-3817a08894ac">
+				<reportElement positionType="Float" x="0" y="512" width="555" height="37" uuid="e60e7a86-9af0-4b06-820a-3817a08894ac">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -1375,7 +1293,7 @@ where e.id = $P{engagementId}]]>
 				</jr:table>
 			</componentElement>
 			<componentElement>
-				<reportElement positionType="Float" x="1" y="582" width="555" height="37" uuid="23861999-72d0-4447-8128-73f9fb499291">
+				<reportElement positionType="Float" x="1" y="569" width="555" height="37" uuid="23861999-72d0-4447-8128-73f9fb499291">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -1599,7 +1517,7 @@ where e.id = $P{engagementId}]]>
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="507" width="555" height="17" uuid="9265e9c3-daa7-4817-abad-638c25606f12">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="494" width="555" height="17" uuid="9265e9c3-daa7-4817-abad-638c25606f12">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -1622,7 +1540,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[Appendix 1-Previous Recommendations]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" mode="Opaque" x="0" y="564" width="555" height="17" uuid="ffc80f6e-3eb4-4067-a5da-cf852fef6483">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="551" width="555" height="17" uuid="ffc80f6e-3eb4-4067-a5da-cf852fef6483">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -1645,7 +1563,7 @@ where e.id = $P{engagementId}]]>
 				<text><![CDATA[Appendix 2-Summary of current findings ]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="0" y="383" width="555" height="20" uuid="bdc004c0-c3a4-4c23-aecb-433c880a1c0c">
+				<reportElement positionType="Float" x="0" y="370" width="555" height="20" uuid="bdc004c0-c3a4-4c23-aecb-433c880a1c0c">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
@@ -1664,6 +1582,17 @@ where e.id = $P{engagementId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA["The agreement between Auditor and Auditee on how to implement audit recommendations (compliance plan) has been made and attached"]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="2" y="324" width="550" height="26" uuid="a61e2d44-15ed-4a5e-8ab6-5e63a41d7ba0">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportParameter name="engagementId">
+					<subreportParameterExpression><![CDATA[$P{engagementId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["audit_report_finding.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 </jasperReport>
